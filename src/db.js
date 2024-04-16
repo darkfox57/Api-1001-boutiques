@@ -5,19 +5,20 @@ import { Sequelize } from 'sequelize';
 
 dotenv.config();
 
-const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/content`, {
- logging: false,
- native: false
+const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+ host: DB_HOST,
+ dialect: 'mysql',
+ logging: false
 });
 
-const __dirname = path.dirname(import.meta.url);
-const basename = path.basename(import.meta.url);
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const basename = path.basename(new URL(import.meta.url).pathname);
 
 const modelDefiners = [];
 
-const modelFiles = readdirSync(path.join('./src/models/sql')).filter(
+const modelFiles = readdirSync(path.join(__dirname, './models/sql')).filter(
  (file) => file.endsWith('.js') && file !== basename
 );
 

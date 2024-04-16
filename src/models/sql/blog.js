@@ -1,11 +1,11 @@
-import { DataTypes, UUIDV4 } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
  sequelize.define('blog', {
   id: {
-   type: DataTypes.UUID,
-   defaultValue: UUIDV4,
+   type: DataTypes.INTEGER,
    primaryKey: true,
+   autoIncrement: true,
   },
   title: {
    type: DataTypes.STRING,
@@ -20,14 +20,15 @@ export default (sequelize) => {
    allowNull: false,
   },
   content: {
-   type: DataTypes.TEXT('long'),
+   type: DataTypes.TEXT,
    allowNull: false,
   },
   tags: {
-   type: DataTypes.ARRAY(DataTypes.STRING),
+   type: DataTypes.STRING,
    allowNull: false
   }
  }, {
   timestamps: true
  })
 }
+
