@@ -11,9 +11,10 @@ const generationConfig = { temperature: 0.9, topP: 1, topK: 50, maxOutputTokens:
 const model = genAI.getGenerativeModel({ model: "gemini-pro", generationConfig });
 
 export async function geminiGenerator(text) {
+  console.log(text);
   try {
     const prompt = ` 
-    Let's dive into crafting an epic blog article! Your mission, should you c hoose to accept it, is to write an article with a minimum of 1000 words. The article should be titled with something captivating like ${text.title} and have a description that hooks readers from the get-go: ${text.description}.
+    Let's dive into crafting an epic blog article! Your mission, should you choose to accept it, is to write an article with a minimum of 2000 words. The article should be titled with something captivating like ${text.title} and have a description that hooks readers from the get-go: ${text.description}.
 
 Now, unleash your creativity and delve deep into the topic, leaving no stone unturned. Cover every angle, provide valuable insights, adding images for reference and engage your readers with compelling storytelling. Remember, the goal is to educate, entertain, and inspire.
 
@@ -23,13 +24,13 @@ With your article polished and ready to go, it's time to share your wisdom with 
   `;
 
     const result = await model.generateContent(prompt);
-    const response = result.response.candidates[0].content.parts[0].text;
+    console.log(result.response.candidates[0]);
+    // const response = result.response.candidates[0].content.parts[0].text;
 
-    // console.log(response);
-    const article = response.toString();
+    // // console.log(response);
+    // const article = response.toString();
 
-
-    return article
+    // return article
 
   } catch (err) {
     console.log(err.message);

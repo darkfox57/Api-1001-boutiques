@@ -8,19 +8,18 @@ dotenv.config();
 export const saveToDatabase = async (post) => {
  try {
 
-
   // Create a new Post instance based on the post object
   const newPost = await models.Blog.create({
    ...post
   });
 
-  res.status(201).json(newPost)
+  return newPost
 
  } catch (error) {
   console.error('Error saving blog post information:', error);
+  res.status(500).json({ error: 'Internal Server Error' });
  }
 };
-
 
 
 

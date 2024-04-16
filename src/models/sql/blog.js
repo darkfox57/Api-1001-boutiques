@@ -8,11 +8,11 @@ export default (sequelize) => {
    autoIncrement: true,
   },
   title: {
-   type: DataTypes.STRING,
+   type: DataTypes.TEXT,
    allowNull: false,
   },
   description: {
-   type: DataTypes.STRING,
+   type: DataTypes.TEXT,
    allowNull: false,
   },
   slug: {
@@ -24,8 +24,8 @@ export default (sequelize) => {
    allowNull: false,
   },
   tags: {
-   type: DataTypes.STRING,
-   allowNull: false
+   type: DataTypes.JSON,
+   allowNull: true
   }
  }, {
   timestamps: true

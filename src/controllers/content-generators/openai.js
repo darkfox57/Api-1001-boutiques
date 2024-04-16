@@ -2,7 +2,7 @@
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import { saveToDatabase } from "../../db/saveBlog.js";
-import { geminiGenerator } from './gemini.js';
+// import { geminiGenerator } from './gemini.js';
 
 
 
@@ -19,40 +19,86 @@ export async function openaiGenerator(req, res) {
      content: `you are a helpful assistant designet to output JSON.`,
     },
     {
-     role: "user", content: `Let's turbocharge your blog articles for SEO success! Choose a topic from the exciting world of technology, artificial intelligence, machine learning, data science, or programming. Now, craft a title that not only captures the essence of your article but also includes important keywords to attract search engine traffic.
-
-     For the description, think of it as a sneak peek into the treasure trove of knowledge awaiting your readers. Keep it concise, informative, and packed with relevant keywords to improve your article's visibility in search results.
+     role: "user", content: `{
+      "title": "Title of the article",
+      "descripcion": "Description of the item (maximum 160 characters)",
+      "slug": "article-slug",
+      "tags": ["tag1", "tag2", "tag3"],
+      "content": "# Article title
      
-     Next, the slug – this is your article's URL, so make it count! Choose a slug that's short, descriptive, and includes key keywords. It should give readers a clear idea of what your article is about and entice them to click through.
+     ## Introduction
      
-     And finally, the tags – these are your article's best friends for categorization and discoverability. Choose tags that accurately represent the topics covered in your article, making it easier for readers to find and for search engines to index.
+     Write the introduction of the article here.
      
-     Once you have all these elements ready, package them neatly into a JSON object format. With your SEO-optimized metadata in place, your blog articles will be ready to conquer the digital landscape and attract waves of eager readers. Let's make your content shine!`
+     ## Subtitle 1
+     
+     Write the content of subtitle 1 here.
+     
+     ### Subtitle 1.1
+     
+     Write the content of subtitle 1.1 here.
+     
+     ## Subtitle 2
+     
+     Write the content of subtitle 2 here.
+     
+     ### Subtitle 2.1
+     
+     Write the content of subtitle 2.1 here.
+     
+     ## Conclusion
+     
+     Write the conclusion of the article here.
+     
+     *Note:* You can add more subheadings and sections as needed.
+     "
+     }
+     
+     Instructions:
+     Choose one of the following themes: lingerie, underwear, fashion, lingerie tips
+     Fill in the "title", "description", "slug" and "tags" fields of the JSON.
+     Write the content of the article with at least 2000 words in markdown format in the "content" field.
+     Use relevant keywords in the title, description, tags, and article content.
+     Make sure the title is catchy and the description is informative.
+     Use a clear and organized structure in the content of the article.
+     Include images in the middle of the content to improve the user experience.
+     Finally it returns only the JSON`
     },
    ],
    // prompt: `transform this to json: ${response}`,
-   model: "gpt-3.5-turbo-0125",
+   model: "gpt-4-turbo",
    response_format: { type: "json_object" },
   });
 
+
+
   const text = JSON.parse(seo.choices[0].message.content)
 
-  const article = await geminiGenerator(text)
+  // const article = await geminiGenerator(text)
 
   const post = {
    title: text.title,
    description: text.description,
    tags: text.tags,
    slug: text.slug,
-   content: article
+   content: text.content
+  };
+
+  // Verificar si alguno de los elementos del objeto está vacío
+  const emptyFields = Object.entries(post)
+   .filter(([key, value]) => value === undefined || value === null || value === '')
+   .map(([key, value]) => key);
+
+  if (emptyFields.length > 0) {
+   const errorMessage = `Los siguientes campos están incompletos: ${emptyFields.join(', ')}`;
+   throw new Error(errorMessage);
+  } else {
+   await saveToDatabase(post);
+   res.status(201).json(post);
   }
 
-  await saveToDatabase(post)
-
-  res.status(201).json(post)
-
  } catch (e) {
-  res.status(500).send(error.message)
+  res.status(500).send(e.message)
  }
 
 } 
