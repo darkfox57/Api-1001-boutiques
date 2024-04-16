@@ -1,0 +1,54 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "```json\n{\n  \"stores\": [\n    {\n      \"name\": \"OcÃ©ane\",\n      \"location\": \"79 RUE GEORGES CLEMENCEAU, 41200, ROMORANTIN LANTHENAY, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Flo lingerie\",\n      \"location\": \"21 RUE PORTE GROSSET, 41130, SELLES-SUR-CHER, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Promise\",\n      \"location\": \"Galerie Marchande Intermarche Ccial La rue Menchecourt, 80100, Abbeville, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"l'ecrin\",\n      \"location\": \"centre commercial intermarche, 34300, agde, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"La guepiÃ¨re\",\n      \"location\": \"94 boulevard Carnot , 47000, Agen, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Galeries lafayette Agen\",\n      \"location\": \"72 BOULEVARD DE LA REPUBLIQUE, 47003, AGEN, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Carrade et fils\",\n      \"location\": \"96 boulevard Carnot, 47000, Agen , France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Josy\",\n      \"location\": \"14 RUE LAFAYETTE, 47000, AGEN, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Dessus de soie\",\n      \"location\": \"28 place 28 juillet, 50230, Agon Coutainville, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Eminence\",\n      \"location\": \"Route de Gallargues , 30470, Aimargues, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Intim idÃ©e\",\n      \"location\": \"27 rue Gambetta , 40800, Aire-sur-l'Adour, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Petits secrets\",\n      \"location\": \"17 Rue du Bourg 62120, Aire-sur-la-Lys, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Boutique Addict' ERES\",\n      \"location\": \"3 rue nazareth, 13100, Aix-en-Provence, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Janine robin\",\n      \"location\": \"67 cours mirabeau , 13100, Aix-en-Provence, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Victorine\",\n      \"location\": \"6 Rue de la GlaciÃ¨re, 13100, Aix-en-Provence, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Pain de sucre\",\n      \"location\": \"5 Rue Nazareth , 13100, Aix en Provence, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"La coquette lingerie\",\n      \"location\": \"16 place verdun , 13100, Aix-en-Provence, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Aubade Aix-En-Provence\",\n      \"location\": \"12 B RUE NAZARETH, 13100, AIX-EN-PROVENCE, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"L'impertinente\",\n      \"location\": \"12 rue nazareth, 13100, Aix-en-Provence, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    },\n    {\n      \"name\": \"Charl'ine - cc jas de bouffan\",\n      \"location\": \"C.CIAL GEANT JAS DE BOUFFAN 210 AVENUE DE LA BREDASQUE, 13090, AIX EN PROVENCE, France\",\n      \"opening_hours\": null,\n      \"website\": null,\n      \"phone\": null,\n      \"description\": null,\n      \"slogan\": null\n    }\n  ]\n}\n```"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0,
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE"
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE"
+        }
+      ]
+    }
+  ],
+  "promptFeedback": {
+    "safetyRatings": [
+      {
+        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+        "probability": "NEGLIGIBLE"
+      },
+      {
+        "category": "HARM_CATEGORY_HATE_SPEECH",
+        "probability": "NEGLIGIBLE"
+      },
+      {
+        "category": "HARM_CATEGORY_HARASSMENT",
+        "probability": "NEGLIGIBLE"
+      },
+      {
+        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+        "probability": "NEGLIGIBLE"
+      }
+    ]
+  }
+}

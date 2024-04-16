@@ -1,0 +1,84 @@
+{
+  "stores": [
+    {
+      "name": "OcÃ©ane",
+      "location": "79 RUE GEORGES CLEMENCEAU, 41200, ROMORANTIN LANTHENAY, France"
+    },
+    {
+      "name": "Flo lingerie",
+      "location": "21 RUE PORTE GROSSET, 41130, SELLES-SUR-CHER, France"
+    },
+    {
+      "name": "Promise",
+      "location": "Galerie Marchande Intermarche Ccial La rue Menchecourt, 80100, Abbeville, France"
+    },
+    {
+      "name": "l'ecrin",
+      "location": "centre commercial intermarche, 34300, agde, France"
+    },
+    {
+      "name": "La guepiÃ¨re",
+      "location": "94 boulevard Carnot , 47000, Agen, France"
+    },
+    {
+      "name": "Galeries lafayette Agen",
+      "location": "72 BOULEVARD DE LA REPUBLIQUE, 47003, AGEN, France"
+    },
+    {
+      "name": "Carrade et fils",
+      "location": "96 boulevard Carnot, 47000, Agen , France"
+    },
+    {
+      "name": "Josy",
+      "location": "14 RUE LAFAYETTE, 47000, AGEN, France"
+    },
+    {
+      "name": "Dessus de soie",
+      "location": "28 place 28 juillet, 50230, Agon Coutainville, France"
+    },
+    {
+      "name": "Eminence",
+      "location": "Route de Gallargues , 30470, Aimargues, France"
+    },
+    {
+      "name": "Intim idÃ©e",
+      "location": "27 rue Gambetta , 40800, Aire-sur-l'Adour, France"
+    },
+    {
+      "name": "Petits secrets",
+      "location": "17 Rue du Bourg 62120, Aire-sur-la-Lys, France"
+    },
+    {
+      "name": "Boutique Addict' ERES",
+      "location": "3 rue nazareth, 13100, Aix-en-Provence, France"
+    },
+    {
+      "name": "Janine robin",
+      "location": "67 cours mirabeau , 13100, Aix-en-Provence, France"
+    },
+    {
+      "name": "Victorine",
+      "location": "6 Rue de la GlaciÃ¨re, 13100, Aix-en-Provence, France"
+    },
+    {
+      "name": "Pain de sucre",
+      "location": "5 Rue Nazareth , 13100, Aix en Provence, France"
+    },
+    {
+      "name": "La coquette lingerie",
+      "location": "16 place verdun , 13100, Aix-en-Provence, France"
+    },
+    {
+      "name": "Aubade Aix-En-Provence",
+      "location": "12 B RUE NAZARETH, 13100, AIX-EN-PROVENCE, France"
+    },
+    {
+      "name": "L'impertinente",
+      "location": "12 rue nazareth, 13100, Aix-en-Provence, France"
+    },
+    {
+      "name": "Charl'ine - cc jas de bouffan",
+      "location": "C.CIAL GEANT JAS DE BOUFFAN 210 AVENUE DE LA BREDASQUE, 13090, AIX EN PROVENCE, France"
+    }
+  ]
+}
