@@ -13,12 +13,12 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
  logging: false
 });
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const basename = path.basename(new URL(import.meta.url).pathname);
+const __dirname = path.dirname(import.meta.url);
+const basename = path.basename(import.meta.url);
 
 const modelDefiners = [];
 
-const modelFiles = readdirSync(path.join(__dirname, './models/sql')).filter(
+const modelFiles = readdirSync(path.join('./src/models/sql')).filter(
  (file) => file.endsWith('.js') && file !== basename
 );
 
