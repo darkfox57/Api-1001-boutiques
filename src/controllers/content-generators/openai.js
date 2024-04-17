@@ -62,7 +62,7 @@ export async function openaiGenerator(req, res) {
      Make sure the title is catchy and the description is informative.
      Use a clear and organized structure in the content of the article.
      Include images in the middle of the content to improve the user experience.
-     Finally it returns only the JSON`
+     Finally it returns only the JSON, write all the content, title, description, slug and tags in french`
     },
    ],
    // prompt: `transform this to json: ${response}`,
