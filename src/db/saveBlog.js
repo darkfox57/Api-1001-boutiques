@@ -5,7 +5,7 @@ dotenv.config();
 
 
 // Function to save the response to the database
-export const saveToDatabase = async (post) => {
+export const saveBlog = async (post) => {
  try {
 
   // Create a new Post instance based on the post object

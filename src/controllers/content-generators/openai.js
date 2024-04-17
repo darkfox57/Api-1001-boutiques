@@ -1,7 +1,7 @@
 
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
-import { saveToDatabase } from "../../db/saveBlog.js";
+import { saveBlog } from "../../db/saveBlog.js";
 // import { geminiGenerator } from './gemini.js';
 
 
@@ -93,7 +93,7 @@ export async function openaiGenerator(req, res) {
    const errorMessage = `Los siguientes campos están incompletos: ${emptyFields.join(', ')}`;
    throw new Error(errorMessage);
   } else {
-   await saveToDatabase(post);
+   await saveBlog(post);
    res.status(201).json(post);
   }
 
