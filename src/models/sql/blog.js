@@ -16,8 +16,13 @@ export default (sequelize) => {
    allowNull: false,
   },
   slug: {
-   type: DataTypes.STRING,
+   type: DataTypes.STRING(255),
    allowNull: false,
+   unique: true
+  },
+  img: {
+   type: DataTypes.TEXT,
+   allowNull: true,
   },
   content: {
    type: DataTypes.TEXT,
@@ -26,6 +31,15 @@ export default (sequelize) => {
   tags: {
    type: DataTypes.JSON,
    allowNull: true
+  },
+  category: {
+   type: DataTypes.STRING,
+   allowNull: true
+  },
+  published: {
+   type: DataTypes.BOOLEAN,
+   allowNull: true,
+   defaultValue: false
   }
  }, {
   timestamps: true
