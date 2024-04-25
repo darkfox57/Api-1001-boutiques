@@ -32,10 +32,6 @@ export default (sequelize) => {
    type: DataTypes.JSON,
    allowNull: true
   },
-  category: {
-   type: DataTypes.STRING,
-   allowNull: true
-  },
   published: {
    type: DataTypes.BOOLEAN,
    allowNull: true,
@@ -43,6 +39,7 @@ export default (sequelize) => {
   }
  }, {
   timestamps: true
- })
+ });
 }
+
 

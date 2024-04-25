@@ -1,25 +1,57 @@
 import dotenv from 'dotenv';
+import { Op } from 'sequelize';
 import models from '../db.js';
 
 dotenv.config();
 
 
-// Function to save the response to the database
 export const saveBlog = async (post) => {
  try {
 
-  // Create a new Post instance based on the post object
-  const newPost = await models.Blog.create({
-   ...post
+  const { title, description, slug, img, content, tags, category, published } = post;
+
+  // Guardar el blog
+  const newBlog = await models.Blog.create({
+   title,
+   description,
+   slug,
+   img,
+   content,
+   tags,
+   published,
   });
 
-  return newPost
+
+
+  const existingCategories = await models.Category.findAll({
+   where: {
+    name: category.map(c => c),
+   },
+  });
+
+
+  const existingCategoryNames = existingCategories.map(c => c.name);
+
+  // Crear las categorías que no existen
+  const newCategories = category.filter(c => !existingCategoryNames.includes(c));
+  const createdCategories = await models.Category.bulkCreate(newCategories.map(name => ({ name })));
+
+  // Combinar las categorías existentes y recién creadas
+  const allCategories = [...existingCategories, ...createdCategories];
+
+  // Asociar las categorías al nuevo blog
+  await newBlog.addCategory(allCategories);
+
+
+
+  return newBlog;
 
  } catch (error) {
-  console.error('Error saving blog post information:', error);
-  res.status(500).json({ error: 'Internal Server Error' });
+  console.error('Error guardando la información del blog:', error);
+  throw error; // Re-lanzar el error para que sea manejado por el controlador
  }
 };
+
 
 
 

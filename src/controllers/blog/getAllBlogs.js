@@ -12,7 +12,7 @@ const getAllBlogs = async (req, res) => {
  try {
 
   const data = await models.Blog.findAll({
-   attributes: ['id', 'title', 'slug', 'description']
+   attributes: ['id', 'title', 'slug', 'description',], include: models.Category
   })
 
   res.status(201).json(data)

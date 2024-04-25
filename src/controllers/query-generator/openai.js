@@ -9,7 +9,8 @@ dotenv.config();
 
 const openAIInstance = new OpenAI({ apiKey: process.env.OPEN_IA_API });
 
-export async function openaiGenerator(req, res) {
+export async function queryGenerator(req, res) {
+ const { keywords, lang } = req.query
  try {
   const seo = await openAIInstance.chat.completions.create({
    messages: [
@@ -56,14 +57,14 @@ export async function openaiGenerator(req, res) {
      }
      
      Instructions:
-     Choose one of the following themes: spécifités des soutiens gorge de la marque de lingerie empreinte
+     Choose one of the following themes: ${keywords}
      Fill in the "title", "description", "slug", "category" and "tags", make sure about filling all the fields of the JSON do not forget de description.
      Write the content of the article with at least 2000 words in html format in the "content" field.
      Use relevant keywords in the title, description, tags, and article content.
      Make sure the title is catchy and the description is informative.
      Use a clear and organized structure in the content of the article. freely include lists, dates and everything you need.
      Include images in the middle of the content to improve the user experience.
-     Finally it returns only the JSON all the content must be in french`
+     Finally it returns only the JSON all the content must be in ${lang}`
     },
    ],
    // prompt: `transform this to json: ${response}`,

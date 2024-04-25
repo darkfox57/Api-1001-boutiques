@@ -41,6 +41,11 @@ for (const [key, value] of Object.entries(sequelize.models)) {
  models[key] = value;
 }
 
+
+models.Blog.belongsToMany(models.Category, { through: '_CategoryToPost', foreignKey: 'blogId' });
+models.Category.belongsToMany(models.Blog, { through: '_CategoryToPost', foreignKey: 'categoryId' });
+
+
 export const conn = sequelize;
 export default models;
 
