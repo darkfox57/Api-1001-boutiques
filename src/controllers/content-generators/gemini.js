@@ -11,7 +11,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-pro", generationConfig }
 export async function geminiGenerator({ content }) {
   try {
     const prompt = `
-    You are a copywriter who needs to improve an already written blog article. You want to enhance the tone, structure, and optimize it for SEO. You are free to modify the text, add new paragraphs, lists, titles, etc. You have to return the article in HTML format (you dont need to add html, head or body tags, just the content tags).
+    You are a copywriter who needs to improve an already written blog article. You want to enhance the tone, structure, and optimize it for SEO. You are free to modify the text, add new paragraphs, lists, titles, etc. You have to return the article in HTML format (you dont need to add html, head or body tags, just the content tags). The article must contain a minimum of 2000 words.
     this is the text you need to check:
     ${content}
     
