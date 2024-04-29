@@ -2,6 +2,7 @@
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import { saveBlog } from "../../db/saveBlog.js";
+import { geminiGenerator } from '../content-generators/gemini.js';
 
 
 
@@ -72,13 +73,11 @@ export async function queryGenerator(req, res) {
    response_format: { type: "json_object" },
   });
 
-
-
   const text = JSON.parse(seo.choices[0].message.content)
 
-  // const article = await geminiGenerator(text)
+  const article = await geminiGenerator({ content: text.content })
 
-  // res.status(201).json(article);
+
 
   const post = {
    title: text.title,
@@ -86,12 +85,10 @@ export async function queryGenerator(req, res) {
    tags: text.tags,
    category: [text.category],
    slug: text.slug,
-   content: text.content,
+   content: article,
    published: true,
    img: 'https://images.unsplash.com/photo-1552581234-26160f608093?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80'
   };
-
-
 
   // Verificar si alguno de los elementos del objeto está vacío
   const emptyFields = Object.entries(post)
@@ -101,8 +98,12 @@ export async function queryGenerator(req, res) {
   if (emptyFields.length > 0) {
    const errorMessage = `Los siguientes campos están incompletos: ${emptyFields.join(', ')}`;
    throw new Error(errorMessage);
+  }
+
+  const db = await saveBlog(post);
+  if (db.message) {
+   throw new Error(db.message);
   } else {
-   await saveBlog(post);
    res.status(201).json(post);
   }
 

@@ -10,6 +10,11 @@ export const saveBlog = async (post) => {
 
   const { title, description, slug, img, content, tags, category, published } = post;
 
+  const existingBlog = await models.Blog.findOne({ where: { slug } });
+  if (existingBlog) {
+   return { message: 'This article has already been published' }
+  }
+
   // Guardar el blog
   const newBlog = await models.Blog.create({
    title,
