@@ -19,13 +19,12 @@ export async function openaiGenerator(req, res) {
     },
     {
      role: "user", content: `{
-      "title": "Title of the article",
-      "description": "Description of the item (maximum 160 characters)",
-      "slug": "article-slug",
-      "category": "article category"
-      "tags": ["tag1", "tag2", "tag3"],
-      "content": "# Article title
-     
+      title: "Title of the article",
+      description: "Description of the item (maximum 160 characters)",
+      slug: "article-slug",
+      category: "article category"
+      tags: ["tag1", "tag2", "tag3"],
+      content: "     
          
      Write the introduction of the article here.
      
