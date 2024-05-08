@@ -29,7 +29,7 @@ export async function claude(prompt) {
    }
   ],
   max_tokens: 4096,
-  top_k: 250,
+  top_k: 500,
   top_p: 0.999,
   anthropic_version: "bedrock-2023-05-31",
   stop_sequences: ['Human']

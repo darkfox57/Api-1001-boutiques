@@ -22,7 +22,7 @@ export async function generator(req, res) {
  
  Category: Assign the article to an appropriate category or categories.
  
- Content: Write the main body of the article in HTML format, including headings, paragraphs, lists, and any other relevant elements. The content should be informative, well-researched, and engaging for the target audience. keep in mind that this is an string that's going to be in javascript, wrap the content into backticks.
+ Content: Write the main body of the article in HTML format with at least 2000 words, including headings, paragraphs, lists, and any other relevant elements. The content should be informative, well-researched, and engaging for the target audience. keep in mind that this is an string that's going to be in javascript, wrap the content into backticks.
  
  Once you have completed the article, format the output as a JSON object with the following structure:
  
