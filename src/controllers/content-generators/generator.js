@@ -48,8 +48,6 @@ export async function generator(req, res) {
 
   const data = await openaiFormater(text)
 
-
-
   const post = {
    title: data.title,
    description: data.description,

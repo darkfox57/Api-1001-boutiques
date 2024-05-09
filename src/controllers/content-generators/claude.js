@@ -29,7 +29,8 @@ export async function claude(prompt) {
    }
   ],
   max_tokens: 4096,
-  top_k: 500,
+  max_tokens_to_sample: 2048,
+  top_k: 250,
   top_p: 0.999,
   anthropic_version: "bedrock-2023-05-31",
   stop_sequences: ['Human']
@@ -39,7 +40,7 @@ export async function claude(prompt) {
   body: JSON.stringify(payload),
   contentType: "application/json",
   accept: "application/json",
-  modelId: "anthropic.claude-3-sonnet-20240229-v1:0"
+  modelId: "anthropic.claude-v2:1"
  });
  try {
   const response = await client.send(command);
