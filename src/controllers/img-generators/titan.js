@@ -3,13 +3,17 @@ import {
  BedrockRuntimeClient,
  InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
-import axios from "axios";
 import dotenv from 'dotenv';
-
+import fs from 'fs/promises';
+import jimp from 'jimp';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cloudinary from "../../lib/cloudinaryUpload.js";
 
 dotenv.config();
 
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 export async function titan_img(req, res) {
 
  const { text } = req.query
@@ -31,8 +35,8 @@ export async function titan_img(req, res) {
    cfgScale: 8,
    seed: 0,
    quality: "standard",
-   width: 1024,
-   height: 1024,
+   width: 1408,
+   height: 640,
    numberOfImages: 1
   }
  };
@@ -45,20 +49,25 @@ export async function titan_img(req, res) {
  });
  try {
   const { body } = await client.send(command);
-
   const base64Data = body.toString('base64');
-  const response = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`, {
-   file: `data:image/png;base64,${base64Data}`,
-   upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
-   folder: 'ai-blog'
+
+  // Decodificar la cadena base64 y guardar como archivo temporal
+  const imagePath = path.join(__dirname, 'temp', `image-${Date.now()}.png`);
+  const imageBuffer = Buffer.from(base64Data, 'base64');
+  await fs.mkdir(path.dirname(imagePath), { recursive: true });
+  await fs.writeFile(imagePath, imageBuffer);
+
+  console.log(imagePath, imageBuffer);
+
+  // Cargar el archivo temporal en Cloudinary
+  const uploadResponse = await cloudinary.uploader.upload(imagePath, {
+   folder: "ai-blog"
   });
-  if (response.status !== 200) {
-   throw new Error('Failed to upload image to Cloudinary');
-  }
 
+  // Eliminar el archivo temporal
+  await fs.unlink(imagePath);
 
-  res.status(201).json(response.data.secure_url);
-
+  res.status(201).json(uploadResponse);
 
  } catch (error) {
   return res.status(500).json({ message: error.message })
