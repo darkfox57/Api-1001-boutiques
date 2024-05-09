@@ -4,8 +4,11 @@ import {
  InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
 
+export async function titan_img(req, res) {
 
-export async function claude(prompt) {
+ const { text } = req.query
+
+ console.log(text);
 
 
  const client = new BedrockRuntimeClient({
@@ -17,38 +20,37 @@ export async function claude(prompt) {
  })
 
  const payload = {
-  messages: [
-   {
-    "role": "user",
-    "content": [
-     {
-      "type": "text",
-      "text": prompt
-     }
-    ]
-   }
-  ],
-  max_tokens: 4096,
-  top_k: 250,
-  top_p: 0.999,
-  anthropic_version: "bedrock-2023-05-31",
-  stop_sequences: ['Human']
+  textToImageParams: {
+   text: `you need to generate a featured image for this article ${text}`
+  },
+  taskType: "TEXT_IMAGE",
+  imageGenerationConfig: {
+   cfgScale: 8,
+   seed: 0,
+   quality: "standard",
+   width: 1024,
+   height: 1024,
+   numberOfImages: 1
+  }
  };
 
  const command = new InvokeModelCommand({
   body: JSON.stringify(payload),
   contentType: "application/json",
   accept: "application/json",
-  modelId: "anthropic.claude-v2:1"
+  modelId: "amazon.titan-image-generator-v1"
  });
  try {
   const response = await client.send(command);
-  const decodedResponseBody = new TextDecoder().decode(response.body);
-  const responseBody = JSON.parse(decodedResponseBody);
 
-  const { text } = responseBody.content[0];
+  console.log(response);
 
-  return text
+  // const decodedResponseBody = new TextDecoder().decode(response.body);
+  // const responseBody = JSON.parse(decodedResponseBody);
+
+  // const { text } = responseBody.content[0];
+
+  // return text
 
  } catch (err) {
   if (err instanceof AccessDeniedException) {
