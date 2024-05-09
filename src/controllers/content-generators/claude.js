@@ -29,6 +29,7 @@ export async function claude(prompt) {
    }
   ],
   max_tokens: 4096,
+  max_tokens_to_sample: 2048,
   top_k: 250,
   top_p: 0.999,
   anthropic_version: "bedrock-2023-05-31",
