@@ -3,13 +3,16 @@ import {
  BedrockRuntimeClient,
  InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
+import axios from "axios";
+import dotenv from 'dotenv';
+
+
+dotenv.config();
+
 
 export async function titan_img(req, res) {
 
  const { text } = req.query
-
- console.log(text);
-
 
  const client = new BedrockRuntimeClient({
   region: "us-east-1",
@@ -41,24 +44,23 @@ export async function titan_img(req, res) {
   modelId: "amazon.titan-image-generator-v1"
  });
  try {
-  const response = await client.send(command);
+  const { body } = await client.send(command);
 
-  console.log(response);
-
-  // const decodedResponseBody = new TextDecoder().decode(response.body);
-  // const responseBody = JSON.parse(decodedResponseBody);
-
-  // const { text } = responseBody.content[0];
-
-  // return text
-
- } catch (err) {
-  if (err instanceof AccessDeniedException) {
-   console.error(
-    `Access denied. Ensure you have the correct permissions to invoke ${modelId}.`,
-   );
-  } else {
-   throw err;
+  const base64Data = body.toString('base64');
+  const response = await axios.post(`https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`, {
+   file: `data:image/png;base64,${base64Data}`,
+   upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
+   folder: 'ai-blog'
+  });
+  if (response.status !== 200) {
+   throw new Error('Failed to upload image to Cloudinary');
   }
+
+
+  res.status(201).json(response.data.secure_url);
+
+
+ } catch (error) {
+  return res.status(500).json({ message: error.message })
  }
 };
