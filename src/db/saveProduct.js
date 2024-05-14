@@ -42,6 +42,5 @@ export const saveProduct = async ({ name, description, meta_title, image1, link,
 
  } catch (error) {
   console.error('Error saving blog post information:', error);
-  res.status(500).json({ error: 'Internal Server Error' });
  }
 };

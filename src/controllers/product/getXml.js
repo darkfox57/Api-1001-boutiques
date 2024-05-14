@@ -27,6 +27,7 @@ export async function getXml(req, res) {
 
    for (const product of products) {
     try {
+        console.log(product);
      await saveProduct(product);
     } catch (error) {
      console.error('Error al guardar el producto en la base de datos:', error);
