@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { queryGenerator } from "../controllers/query-generator/openai.js";
+import { generator } from "../controllers/content-generators/generator.js";
+import { titan_img } from "../controllers/img-generators/titan.js";
 import blogRoute from "./blog.js";
 import content_Generation from "./content-generation.js";
 import productRoute from "./products.js";
@@ -15,7 +16,8 @@ router.use('/generate', (req, res, next) => {
   next(); // Si hay query, pasa la solicitud al siguiente middleware
  }
 });
-router.use('/generate', queryGenerator);
+router.use('/generate', generator);
+router.use('/img-generate', titan_img);
 
 router.use('/blog', blogRoute)
 router.use('/products', productRoute)
