@@ -34,7 +34,7 @@ export async function getXml(req, res) {
     }
    }
 
-   res.status(200).json(result);
+   res.status(200).json(products);
   });
  } catch (error) {
   console.error('Error al realizar la solicitud HTTP:', error);
