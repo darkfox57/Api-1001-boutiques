@@ -8,6 +8,9 @@ import productRoute from "./products.js";
 
 const router = Router()
 
+router.use('/blog', blogRoute)
+router.use('/products', productRoute)
+router.use('/img-generate', titan_img);
 
 router.use('/generate', (req, res, next) => {
  if (!Object.keys(req.query).length) {
@@ -17,10 +20,8 @@ router.use('/generate', (req, res, next) => {
  }
 });
 router.use('/generate', generator);
-router.use('/img-generate', titan_img);
 
-router.use('/blog', blogRoute)
-router.use('/products', productRoute)
+
 
 export default router;
 

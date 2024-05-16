@@ -11,12 +11,12 @@ export default (sequelize) => {
    type: DataTypes.TEXT,
    allowNull: false
   },
-  description: {
-   type: DataTypes.TEXT,
+  brand: {
+   type: DataTypes.STRING,
    allowNull: false
   },
-  meta_title: {
-   type: DataTypes.TEXT,
+  category: {
+   type: DataTypes.STRING,
    allowNull: false
   },
   image1: {
@@ -25,17 +25,18 @@ export default (sequelize) => {
   },
   link: {
    type: DataTypes.STRING,
-   allowNull: false
+   allowNull: false,
+   unique: true,
   },
-  short_description: {
-   type: DataTypes.TEXT,
-   allowNull: false
-  },
-  meta_description: {
-   type: DataTypes.TEXT,
+  pricepercentreduction: {
+   type: DataTypes.STRING,
    allowNull: false
   },
   price: {
+   type: DataTypes.FLOAT,
+   allowNull: false
+  },
+  old_price: {
    type: DataTypes.FLOAT,
    allowNull: false
   }

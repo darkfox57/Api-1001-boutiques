@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
 import { saveBlog } from "../../db/saveBlog.js";
+import imgSearch from '../../lib/cloudinarySearch.js';
 import { openaiFormater } from '../../lib/openaiformater.js';
 import { claude } from "./claude.js";
+
 
 
 dotenv.config();
@@ -47,6 +49,9 @@ export async function generator(req, res) {
 
     const data = await openaiFormater(text)
 
+    const searchTags = data.tags
+    const image = await imgSearch(searchTags)
+
     const post = {
       title: data.title,
       description: data.description,
@@ -55,7 +60,7 @@ export async function generator(req, res) {
       slug: data.slug,
       content: data.content,
       published: true,
-      img: 'https://images.unsplash.com/photo-1552581234-26160f608093?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80'
+      img: image
     };
 
     await saveBlog(post)
