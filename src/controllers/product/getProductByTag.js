@@ -6,12 +6,13 @@ dotenv.config();
 
 const getProductByTag = async (req, res) => {
  const { tags } = req.query;
+ const seasrchesTags = tags.split(',')
  try {
   let data = []
 
   data = await models.Product.findAll({
    where: {
-    brand: tags[0]
+    brand: seasrchesTags[0]
    },
    limit: 8
   });
@@ -19,7 +20,7 @@ const getProductByTag = async (req, res) => {
    data = await models.Product.findAll({
     where: {
      name: {
-      [Op.or]: tags.split(',').map(tag => ({ [Op.like]: `%${tag}%` }))
+      [Op.or]: seasrchesTags.map(tag => ({ [Op.like]: `%${tag}%` }))
      }
     },
     limit: 8
