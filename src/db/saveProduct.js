@@ -5,7 +5,7 @@ dotenv.config();
 
 
 // Function to save the response to the database
-export const saveProduct = async ({ name, brand, image1, link, price, old_price, pricepercentreduction, category }) => {
+export const saveProduct = async ({ name, brand, image1, link, price, old_price, variable, category }) => {
  try {
 
   let data
@@ -16,7 +16,7 @@ export const saveProduct = async ({ name, brand, image1, link, price, old_price,
    category: category[0],
    image1: image1[0],
    link: link[0],
-   pricepercentreduction: pricepercentreduction[0],
+   pricepercentreduction: variable[0],
    price: price[0],
    old_price: old_price[0],
   }

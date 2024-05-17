@@ -13,7 +13,7 @@ const getProductByTag = async (req, res) => {
      [Op.or]: tags.split(',').map(tag => ({ [Op.like]: `%${tag}%` }))
     }
    },
-   limit: 5
+   limit: 8
   });
   res.status(200).json(data);
  } catch (error) {
