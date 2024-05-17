@@ -6,26 +6,47 @@ dotenv.config();
 
 const getProductByTag = async (req, res) => {
  const { tags } = req.query;
- const seasrchesTags = tags.split(',')
+ const tagList = tags.replace('collection', '').split(',')
  try {
   let data = []
 
-  data = await models.Product.findAll({
+  const exactMatch = await models.Product.findAll({
    where: {
-    brand: seasrchesTags[0]
-   },
-   limit: 8
+    name: {
+     [Op.like]: `%${tagList.join(' ')}%`
+    }
+   }
   });
-  if (data.length === 0) {
+
+  // Si se encuentra una coincidencia exacta, se agrega a los resultados
+  if (exactMatch.length > 0) {
+   data = exactMatch;
+  } else {
+   // Si no se encuentra una coincidencia exacta, busca productos que contengan todas las etiquetas en el nombre
    data = await models.Product.findAll({
     where: {
+     brand: tagList[0],
      name: {
-      [Op.or]: seasrchesTags.map(tag => ({ [Op.like]: `%${tag}%` }))
+      [Op.like]: `%${tagList[1]}%`
      }
     },
     limit: 8
    });
+   if (data.length === 0) {
+    data = await models.Product.findAll({
+     where: {
+      name: {
+       [Op.or]: tagList.map(tag => ({ [Op.like]: `%${tag}%` }))
+      }
+     },
+     limit: 8
+    });
+   }
   }
+
+
+
+
   res.status(200).json(data);
  } catch (error) {
   console.error("Error al consultar los productos:", error);
