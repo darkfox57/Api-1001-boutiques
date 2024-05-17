@@ -20,7 +20,7 @@ export async function generator(req, res) {
  
  Description: Write a compelling meta description that accurately summarizes the article's content and entices readers to engage with it.
  
- Tags: Provide a list of relevant tags or keywords related to the article's subject matter.
+ Tags: Provide a list of relevant tags or keywords related to the article's subject matter. If there is a brand name or collection, place it first in the tags, followed by the rest of the tags.
  
  Category: Assign the article to an appropriate category or categories.
  
