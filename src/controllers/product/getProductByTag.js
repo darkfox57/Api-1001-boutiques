@@ -7,14 +7,26 @@ dotenv.config();
 const getProductByTag = async (req, res) => {
  const { tags } = req.query;
  try {
-  const data = await models.Product.findAll({
+  let data = []
+
+  data = await models.Product.findAll({
    where: {
-    name: {
-     [Op.or]: tags.split(',').map(tag => ({ [Op.like]: `%${tag}%` }))
+    brand: {
+     [Op.or]: tags[0]
     }
    },
    limit: 8
   });
+  if (data.length === 0) {
+   data = await models.Product.findAll({
+    where: {
+     name: {
+      [Op.or]: tags.split(',').map(tag => ({ [Op.like]: `%${tag}%` }))
+     }
+    },
+    limit: 8
+   });
+  }
   res.status(200).json(data);
  } catch (error) {
   console.error("Error al consultar los productos:", error);
