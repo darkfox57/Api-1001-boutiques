@@ -11,9 +11,7 @@ const getProductByTag = async (req, res) => {
 
   data = await models.Product.findAll({
    where: {
-    brand: {
-     [Op.like]: tags[0]
-    }
+    brand: tags[0]
    },
    limit: 8
   });
