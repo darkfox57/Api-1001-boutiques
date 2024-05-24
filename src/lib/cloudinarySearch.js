@@ -3,7 +3,7 @@ import cloudinary from "./cloudinaryUpload.js";
 export default async function imgSearch(searchTags) {
  try {
   // Construir la expresión de búsqueda con la lógica OR para las etiquetas y el nombre del archivo
-  const expresion = `folder: AICONTENT resource_type:image AND (${searchTags.map(tag => `tags=${tag}`).join(' OR ')}) AND filename:${searchTags.join(' OR filename:')}`;
+  const expresion = `folder: AICONTENT resource_type:image AND (${searchTags.map(tag => `tags=${tag}`).join(' OR ')})`;
 
   const res = await cloudinary.search.expression(expresion).execute();
   if (res.resources.length > 0) {
