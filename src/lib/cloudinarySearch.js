@@ -8,7 +8,8 @@ export default async function imgSearch(searchTags) {
   const res = await cloudinary.search.expression(expresion).execute();
   if (res.resources.length > 0) {
 
-   const img = res.resources[0].url
+   const randomIndex = Math.floor(Math.random() * res.resources.length);
+   const img = res.resources[randomIndex].url;
    return img;
   } else {
    return 'https://images.unsplash.com/photo-1552581234-26160f608093?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80';

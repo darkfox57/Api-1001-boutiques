@@ -5,16 +5,15 @@ import models from '../../db.js';
 dotenv.config();
 
 const getProductByTag = async (req, res) => {
- const { tags } = req.query;
- const tagList = tags.replace('collection', '').split(',')
+ const { brand, collection } = req.query;
+
  try {
   let data = []
 
   const exactMatch = await models.Product.findAll({
    where: {
-    name: {
-     [Op.like]: `%${tagList.join(' ')}%`
-    }
+    brand: brand,
+    collection: collection
    }
   });
 
@@ -25,9 +24,10 @@ const getProductByTag = async (req, res) => {
    // Si no se encuentra una coincidencia exacta, busca productos que contengan todas las etiquetas en el nombre
    data = await models.Product.findAll({
     where: {
-     brand: tagList[0],
+     brand: brand,
+     collection: collection,
      name: {
-      [Op.like]: `%${tagList[1]}%`
+      [Op.like]: `%${tagList.join(' ')}%`
      }
     },
     limit: 8
@@ -35,6 +35,8 @@ const getProductByTag = async (req, res) => {
    if (data.length === 0) {
     data = await models.Product.findAll({
      where: {
+      brand: brand,
+      collection: collection,
       name: {
        [Op.or]: tagList.map(tag => ({ [Op.like]: `%${tag}%` }))
       }
@@ -43,9 +45,6 @@ const getProductByTag = async (req, res) => {
     });
    }
   }
-
-
-
 
   res.status(200).json(data);
  } catch (error) {

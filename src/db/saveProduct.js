@@ -5,7 +5,7 @@ dotenv.config();
 
 
 // Function to save the response to the database
-export const saveProduct = async ({ name, brand, image1, link, price, old_price, variable, category }) => {
+export const saveProduct = async ({ name, brand, image1, link, price, old_price, variable, category, Forme, Gamme, description }) => {
  try {
 
   let data
@@ -13,12 +13,17 @@ export const saveProduct = async ({ name, brand, image1, link, price, old_price,
   data = {
    name: name[0],
    brand: brand[0],
+   collection: Gamme[0],
+   form: Forme[0],
    category: category[0],
+   description: description[0],
    image1: image1[0],
    link: link[0],
    pricepercentreduction: variable[0],
    price: price[0],
    old_price: old_price[0],
+
+
   }
 
   // Verificar si el enlace del producto ya existe en la base de datos

@@ -28,6 +28,14 @@ export default (sequelize) => {
    type: DataTypes.TEXT,
    allowNull: false,
   },
+  brand: {
+   type: DataTypes.TEXT,
+   allowNull: true,
+  },
+  collection: {
+   type: DataTypes.TEXT,
+   allowNull: true,
+  },
   tags: {
    type: DataTypes.JSON,
    allowNull: true

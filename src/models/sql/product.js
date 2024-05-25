@@ -15,7 +15,19 @@ export default (sequelize) => {
    type: DataTypes.STRING,
    allowNull: false
   },
+  collection: {
+   type: DataTypes.STRING,
+   allowNull: false
+  },
+  form: {
+   type: DataTypes.STRING,
+   allowNull: false
+  },
   category: {
+   type: DataTypes.STRING,
+   allowNull: false
+  },
+  description: {
    type: DataTypes.STRING,
    allowNull: false
   },
