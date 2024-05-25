@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 import models from '../../db.js';
 
 dotenv.config();
@@ -14,7 +14,9 @@ const getProductByTag = async (req, res) => {
    where: {
     brand: brand,
     collection: collection
-   }
+   },
+   order: Sequelize.literal('rand()'),
+   limit: 8
   });
 
   // Si se encuentra una coincidencia exacta, se agrega a los resultados
@@ -30,6 +32,7 @@ const getProductByTag = async (req, res) => {
       [Op.like]: `%${tagList.join(' ')}%`
      }
     },
+    order: Sequelize.literal('rand()'),
     limit: 8
    });
    if (data.length === 0) {
@@ -41,6 +44,7 @@ const getProductByTag = async (req, res) => {
        [Op.or]: tagList.map(tag => ({ [Op.like]: `%${tag}%` }))
       }
      },
+     order: Sequelize.literal('rand()'),
      limit: 8
     });
    }
