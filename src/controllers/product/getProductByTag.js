@@ -12,8 +12,12 @@ const getProductByTag = async (req, res) => {
 
   const exactMatch = await models.Product.findAll({
    where: {
-    brand: brand,
-    collection: collection
+    brand: {
+     [Op.like]: brand
+    },
+    collection: {
+     [Op.like]: collection
+    }
    },
    order: Sequelize.literal('rand()'),
    limit: 8
@@ -27,27 +31,13 @@ const getProductByTag = async (req, res) => {
    data = await models.Product.findAll({
     where: {
      brand: brand,
-     collection: collection,
-     name: {
-      [Op.like]: `%${tagList.join(' ')}%`
-     }
+     // name: {
+     //  [Op.like]: collection
+     // }
     },
     order: Sequelize.literal('rand()'),
     limit: 8
    });
-   if (data.length === 0) {
-    data = await models.Product.findAll({
-     where: {
-      brand: brand,
-      collection: collection,
-      name: {
-       [Op.or]: tagList.map(tag => ({ [Op.like]: `%${tag}%` }))
-      }
-     },
-     order: Sequelize.literal('rand()'),
-     limit: 8
-    });
-   }
   }
 
   res.status(200).json(data);
