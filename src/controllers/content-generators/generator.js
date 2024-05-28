@@ -48,13 +48,12 @@ export async function generator(req, res) {
 
   try {
     const response = await claude(prompt)
-
     const text = response.replace('\n', '')
       .replace('\', ').replace('\n\n\n"', '').replace(/\n\s*/g, '').replace(/^{\s*|\s*}$/g, '').replace(/([a-zA-Z_]+):/g, '"$1":').replace(/`/g, '"').replace('-', ' ').replace(/\\u200b/g, '').replace(/\\"/g, '\\"')
 
     const data = await openaiFormater(text)
 
-    const searchTags = data.tags
+    const searchTags = [data.collection, data.brand]
     const image = await imgSearch(searchTags)
 
     const post = {
