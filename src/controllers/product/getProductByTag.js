@@ -12,12 +12,14 @@ const getProductByTag = async (req, res) => {
 
   const exactMatch = await models.Product.findAll({
    where: {
-    collection: {
-     [Op.iLike]: `%${collection}%`
-    },
-    brand: {
-     [Op.like]: brand
-    }
+    [Op.and]: [
+     Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('collection')), {
+      [Op.like]: `%${collection.toLowerCase()}%`
+     }),
+     Sequelize.where(Sequelize.fn('LOWER', Sequelize.col('brand')), {
+      [Op.like]: `%${brand.toLowerCase()}%`
+     })
+    ]
    },
    order: Sequelize.literal('rand()'),
    limit: 8
