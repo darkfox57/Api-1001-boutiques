@@ -13,7 +13,7 @@ const getProductByTag = async (req, res) => {
   const exactMatch = await models.Product.findAll({
    where: {
     collection: {
-     [Op.like]: collection
+     [Op.iLike]: `%${collection}%`
     },
     brand: {
      [Op.like]: brand
