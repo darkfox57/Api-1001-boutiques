@@ -13,11 +13,11 @@ export default async function imgSearch(searchTags) {
    return img;
 
   } else {
-   return 'https://res.cloudinary.com/dv47lvckg/image/upload/v1699833597/17_Services_SpaBeauty-BeautyServices_1_1095235c73.jpg'
-   // const generic = await cloudinary.search.expression("folder:SHOPPING resource_type:image").execute()
-   // const randomIndex = Math.floor(Math.random() * generic.resources.length);
-   // const img = generic.resources[randomIndex].url;
-   // return img;
+   // return 'https://res.cloudinary.com/dv47lvckg/image/upload/v1699833597/17_Services_SpaBeauty-BeautyServices_1_1095235c73.jpg'
+   const generic = await cloudinary.search.expression("folder:SHOPPING resource_type:image").execute()
+   const randomIndex = Math.floor(Math.random() * generic.resources.length);
+   const img = generic.resources[randomIndex].url;
+   return img;
   }
 
  } catch (error) {
