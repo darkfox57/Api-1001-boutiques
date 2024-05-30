@@ -16,7 +16,34 @@ export async function claude(prompt) {
   }
  })
 
- const payload = {
+ const bodyAi21Labs = {
+  prompt: prompt,
+  maxTokens: 400,
+  temperature: 0.9,
+  topP: 0.9,
+  stopSequences: [],
+  countPenalty: { scale: 0 },
+  presencePenalty: { scale: 0 },
+  frequencyPenalty: { scale: 0 }
+ }
+ const payloadAI21Labs = {
+  modelId: "ai21.j2-ultra-v1",
+  contentType: "application/json",
+  accept: "application/json",
+  body: JSON.stringify(bodyAi21Labs)
+ };
+
+ const bodyTitan = { inputText: prompt }
+
+ const payloadTitan = {
+  modelId: "amazon.titan-embed-text-v1",
+  contentType: "application/json",
+  accept: "application/json",
+  body: JSON.stringify(bodyTitan)
+ }
+
+
+ const bodyAnthropic = {
   messages: [
    {
     "role": "user",
@@ -29,18 +56,21 @@ export async function claude(prompt) {
    }
   ],
   max_tokens: 4096,
-  top_k: 250,
-  top_p: 0.999,
+  top_k: 500,
+  temperature: 0.5,
+  top_p: 0.9,
   anthropic_version: "bedrock-2023-05-31",
   stop_sequences: ['Human']
- };
+ }
 
- const command = new InvokeModelCommand({
-  body: JSON.stringify(payload),
+ const payloadAnthropic = {
   contentType: "application/json",
   accept: "application/json",
-  modelId: "anthropic.claude-3-haiku-20240307-v1:0"
- });
+  modelId: "anthropic.claude-3-sonnet-20240229-v1:0",
+  body: JSON.stringify(bodyAnthropic),
+ };
+
+ const command = new InvokeModelCommand(payloadAnthropic);
  try {
   const response = await client.send(command);
   const decodedResponseBody = new TextDecoder().decode(response.body);
