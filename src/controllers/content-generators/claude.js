@@ -39,7 +39,7 @@ export async function claude(prompt) {
   body: JSON.stringify(payload),
   contentType: "application/json",
   accept: "application/json",
-  modelId: "anthropic.claude-v2:1"
+  modelId: "anthropic.claude-3-haiku-20240307-v1:0"
  });
  try {
   const response = await client.send(command);
