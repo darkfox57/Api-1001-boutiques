@@ -28,7 +28,7 @@ export async function generator(req, res) {
  
  Category: Assign the article to an appropriate category or categories.
  
- Content: Write the main body of the article in HTML format with at least 700 words and max 2000 words, including headings, paragraphs, lists, and any other relevant elements. The content should be informative, well-researched, and engaging for the target audience. keep in mind that this is an string that's going to be in javascript, wrap the content into backticks.
+ Content: Write the main body of the article in HTML format with at least 700 words and max 2000 words, including headings, paragraphs, lists, and any other relevant elements. The content should be informative, well-researched, and engaging for the target audience. keep in mind that this is an string that's going to be in javascript, , wrapped in double quotation marks, it must be save it as an string. Do not generate blank spaces between html tags.
  
  Once you have completed the article, format the output as a JSON object with the following structure:
  
@@ -40,18 +40,21 @@ export async function generator(req, res) {
    "collection": "...",
    "tags": [...],
    "category": "...",
-   "content": ...
+   "content": "...", 
  }
  
  Please ensure that the content is well-structured, free of grammatical errors, and adheres to best practices for web content writing and writen in ${lang}.
 `
 
+
+
   try {
     const response = await claude(prompt)
-    const text = response.replace('\n', '')
-      .replace('\', ').replace('\n\n\n"', '').replace(/\n\s*/g, '').replace(/^{\s*|\s*}$/g, '').replace(/([a-zA-Z_]+):/g, '"$1":').replace(/`/g, '"').replace('-', ' ').replace(/\\u200b/g, '').replace(/\\"/g, '\\"')
 
-    const data = await openaiFormater(text)
+
+    const data = JSON.parse(response)
+
+
 
     const searchTags = [data.collection, data.brand]
     const image = await imgSearch(searchTags)
@@ -73,6 +76,7 @@ export async function generator(req, res) {
 
     res.status(201).json(post);
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ message: error.message })
   }
 
