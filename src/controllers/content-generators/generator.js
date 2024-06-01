@@ -57,7 +57,7 @@ export async function generator(req, res) {
 
 
     const searchTags = [data.collection, data.brand]
-    const image = await imgSearch(searchTags)
+    const image = await imgSearch(data.collection, data.brand, searchTags)
 
     const post = {
       title: data.title,

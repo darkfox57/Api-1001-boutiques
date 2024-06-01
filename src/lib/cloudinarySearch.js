@@ -1,19 +1,34 @@
 import cloudinary from "./cloudinaryUpload.js";
 
-export default async function imgSearch(searchTags) {
+export default async function imgSearch(searchTags, brand, collection) {
  try {
-  // Construir la expresión de búsqueda con la lógica OR para las etiquetas y el nombre del archivo
-  const expresion = `folder:AICONTENT AND resource_type:image AND (${searchTags.map(tag => `tags=${tag}`).join(' OR ')})`;
+  // Primero, buscar dentro de la colección especificada
+  let expresion = `collections=${collection} AND resource_type:image`;
+  let res = await cloudinary.search.expression(expresion).execute();
 
-  const res = await cloudinary.search.expression(expresion).execute();
+  if (res.resources.length > 0) {
+   // Buscar dentro de la colección por etiquetas
+   expresion = `collections=${collection} AND resource_type:image AND (${searchTags.map(tag => `tags=${tag}`).join(' AND ')})`;
+   res = await cloudinary.search.expression(expresion).execute();
+
+   if (res.resources.length > 0) {
+    const randomIndex = Math.floor(Math.random() * res.resources.length);
+    const img = res.resources[randomIndex].url;
+    return img;
+   }
+  }
+
+  // Si no se encontraron resultados, buscar solo por etiquetas dentro del folder AICONTENT
+  expresion = `folder:AICONTENT AND resource_type:image AND (${searchTags.map(tag => `tags=${tag}`).join(' AND ')})`;
+  res = await cloudinary.search.expression(expresion).execute();
+
   if (res.resources.length > 0) {
    const randomIndex = Math.floor(Math.random() * res.resources.length);
    const img = res.resources[randomIndex].url;
    return img;
-
   } else {
-   // return 'https://res.cloudinary.com/dv47lvckg/image/upload/v1699833597/17_Services_SpaBeauty-BeautyServices_1_1095235c73.jpg'
-   const generic = await cloudinary.search.expression("folder:SHOPPING resource_type:image").execute()
+   // Si no se encontraron resultados, buscar una imagen genérica dentro del folder SHOPPING
+   const generic = await cloudinary.search.expression("folder:SHOPPING AND resource_type:image").execute();
    const randomIndex = Math.floor(Math.random() * generic.resources.length);
    const img = generic.resources[randomIndex].url;
    return img;
@@ -24,6 +39,7 @@ export default async function imgSearch(searchTags) {
   throw error;
  }
 }
+
 
 
 
