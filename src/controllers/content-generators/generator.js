@@ -56,8 +56,10 @@ export async function generator(req, res) {
 
 
 
-    const searchTags = [data.collection, data.brand]
-    const image = await imgSearch(data.collection, data.brand, searchTags)
+
+    let brand = data.brand
+    let collection = data.collection
+    const image = await imgSearch(brand, collection,)
 
     const post = {
       title: data.title,
@@ -71,7 +73,6 @@ export async function generator(req, res) {
       published: true,
       img: image
     };
-
     await saveBlog(post)
 
     res.status(201).json(post);
