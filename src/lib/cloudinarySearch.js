@@ -3,11 +3,13 @@ import cloudinary from "./cloudinaryUpload.js";
 export default async function imgSearch(brand, collection) {
  console.log({ collection: collection, brand: brand });
  try {
-  let res;
+     let res;
+     let searchBrand = brand.toUpperCase(brand).replace(" ", "%20")
+     let searchCollection = brand.toUpperCase(collection).replace(" ", "%20")
 
   if (collection && collection.length > 0) {
    // Buscar dentro del folder AICONTENT y con las etiquetas proporcionadas
-   let expresion = `folder:AICONTENT AND resource_type:image AND (tags=${collection})`;
+   let expresion = `folder:AICONTENT/${searchBrand} AND resource_type:image AND (tags=${collection})`;
    res = await cloudinary.search.expression(expresion).execute();
 
    if (res.resources.length > 0) {
