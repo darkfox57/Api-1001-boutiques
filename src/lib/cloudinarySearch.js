@@ -7,12 +7,12 @@ export default async function imgSearch(brand, collection) {
 
   if (collection && collection.length > 0) {
    // Buscar dentro del folder AICONTENT y con las etiquetas proporcionadas
-   let expresion = `folder:AICONTENT AND resource_type:image AND (tags=${collection})`;
+   let expresion = `folder:AICONTENT AND resource_type:image AND tags=${collection}`;
    res = await cloudinary.search.expression(expresion).execute();
 
    if (res.resources.length > 0) {
     // Buscar dentro del folder y etiquetas específicas
-    expresion = `folder:AICONTENT AND resource_type:image AND (tags=${brand} OR tags=${collection})`;
+    expresion = `folder:AICONTENT AND resource_type:image AND (tags=${collection} OR tags=${brand})`;
     res = await cloudinary.search.expression(expresion).execute();
 
     if (res.resources.length > 0) {
