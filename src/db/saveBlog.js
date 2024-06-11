@@ -8,7 +8,7 @@ dotenv.config();
 export const saveBlog = async (post) => {
  try {
 
-  const { title, description, slug, img, content, brand, collection, tags, category, published } = post;
+  const { title, description, slug, img, content, brand, collection, type, tags, category, published } = post;
 
   const existingBlog = await models.Blog.findOne({ where: { slug } });
   if (existingBlog) {
@@ -24,6 +24,7 @@ export const saveBlog = async (post) => {
    content,
    brand,
    collection,
+   type,
    tags,
    published,
   });

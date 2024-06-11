@@ -3,18 +3,13 @@ import models from '../db.js';
 
 dotenv.config();
 
-
-// Function to save the response to the database
 export const saveProduct = async ({ name, brand, image1, link, price, old_price, variable, category, Forme, Gamme, description }) => {
  try {
-
-  let data
-
-  data = {
+  const data = {
    name: name[0],
    brand: brand[0],
    collection: Gamme[0],
-   form: Forme[0],
+   type: Forme[0],
    category: category[0],
    description: description[0],
    image1: image1[0],
@@ -22,30 +17,22 @@ export const saveProduct = async ({ name, brand, image1, link, price, old_price,
    pricepercentreduction: variable[0],
    price: price[0],
    old_price: old_price[0],
+  };
 
-
-  }
-
-  // Verificar si el enlace del producto ya existe en la base de datos
   const existingProduct = await models.Product.findOne({
-   where: {
-    link: link[0]
-   }
+   where: { link: link[0] }
   });
 
-  // Si el producto ya existe, retornar null indicando que no se ha guardado
   if (existingProduct) {
    console.log(`El producto con el enlace '${link[0]}' ya existe en la base de datos.`);
-   return null;
+   const updatedProduct = await existingProduct.update(data);
+   return updatedProduct;
   }
-  // Create a new Post instance based on the post object
-  const newProduct = await models.Product.create({
-   ...data
-  });
 
-  return newProduct
-
+  const newProduct = await models.Product.create(data);
+  return newProduct;
  } catch (error) {
   console.error('Error saving product information:', error);
+  throw error;
  }
 };

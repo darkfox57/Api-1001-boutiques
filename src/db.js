@@ -10,7 +10,13 @@ const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
  host: DB_HOST,
  dialect: 'mysql',
- logging: false
+ logging: false,
+ pool: {
+  max: 10,  // Aumenta el número máximo de conexiones
+  min: 0,
+  acquire: 30000,
+  idle: 10000
+ }
 });
 
 const __dirname = path.dirname(import.meta.url);

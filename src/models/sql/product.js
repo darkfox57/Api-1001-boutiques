@@ -19,7 +19,7 @@ export default (sequelize) => {
    type: DataTypes.STRING,
    allowNull: false
   },
-  form: {
+  type: {
    type: DataTypes.STRING,
    allowNull: false
   },

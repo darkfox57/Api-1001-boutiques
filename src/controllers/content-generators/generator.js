@@ -10,7 +10,7 @@ dotenv.config();
 
 export async function generator(req, res) {
 
-  const { keywords, lang } = req.query
+  const { keywords, lang, brand, collection, type } = req.query
 
   const prompt = `You are a talented and versatile content writer tasked with generating a comprehensive blog article by the topic: ${keywords}. Your article should include the following elements:
 
@@ -19,10 +19,6 @@ export async function generator(req, res) {
  Slug: Create a URL-friendly slug based on the title.
  
  Description: Write a compelling meta description that accurately summarizes the article's content and entices readers to engage with it.
-
- Brand: If there is a brand name save it as an string
-
- Collection: If there is a collection name save it as an String
  
  Tags: Provide a list of relevant tags or keywords related to the article's subject matter. If there is a brand name or collection, place it first in the tags, followed by the rest of the tags.
  
@@ -36,8 +32,9 @@ export async function generator(req, res) {
    "title": "...",
    "slug": "...",
    "description": "...",
-   "brand": "...",
-   "collection": "...",
+   "brand": ${brand},
+   "collection": ${collection},
+   "type": ${type},
    "tags": [...],
    "category": "...",
    "content": "...", 
@@ -66,6 +63,7 @@ export async function generator(req, res) {
       description: data.description,
       brand: data.brand,
       collection: data.collection,
+      type: data.type,
       tags: data.tags,
       category: [data.category],
       slug: data.slug,

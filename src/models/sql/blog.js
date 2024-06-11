@@ -36,6 +36,10 @@ export default (sequelize) => {
    type: DataTypes.TEXT,
    allowNull: true,
   },
+  type: {
+   type: DataTypes.TEXT,
+   allowNull: true,
+  },
   tags: {
    type: DataTypes.JSON,
    allowNull: true
