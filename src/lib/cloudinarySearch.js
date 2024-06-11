@@ -1,49 +1,35 @@
 import cloudinary from "./cloudinaryUpload.js";
 
-export default async function imgSearch(brand, collection) {
- console.log({ collection: collection, brand: brand });
+export default async function imgSearch(brand, collection, type) {
+ console.log({ collection, brand, type });
+
  try {
-  let res;
-
-  if (collection && collection.length > 0) {
-   // Buscar dentro del folder AICONTENT y con las etiquetas proporcionadas
-   let expresion = `folder:AICONTENT AND resource_type:image AND tags=${collection}`;
-   res = await cloudinary.search.expression(expresion).execute();
-
+  const searchImage = async (exp) => {
+   const res = await cloudinary.search.expression(exp).execute();
    if (res.resources.length > 0) {
-    // Buscar dentro del folder y etiquetas específicas
-    expresion = `folder:AICONTENT AND resource_type:image AND (tags=${collection} OR tags=${brand})`;
-    res = await cloudinary.search.expression(expresion).execute();
-
-    if (res.resources.length > 0) {
-     const randomIndex = Math.floor(Math.random() * res.resources.length);
-     const img = res.resources[randomIndex].url;
-     return img;
-    }
+    const randomIndex = Math.floor(Math.random() * res.resources.length);
+    return res.resources[randomIndex].url;
    }
+   return null;
+  };
+
+  let exp = `folder:AICONTENT AND resource_type:image`;
+  if (collection) exp += ` AND (tags=${collection})`;
+  if (brand) exp += ` AND (tags=${brand} OR tags=${collection})`;
+
+  let img = await searchImage(exp);
+  if (!img && brand) {
+   exp = `folder:AICONTENT AND resource_type:image AND tags=${brand}`;
+   img = await searchImage(exp);
   }
-
-  if (brand && brand.length > 0) {
-   let expresion = `folder:AICONTENT AND resource_type:image AND (tags=${brand})`;
-   res = await cloudinary.search.expression(expresion).execute();
-
-   if (res.resources.length > 0) {
-    // Buscar dentro del folder y etiquetas específicas
-    expresion = `folder:AICONTENT AND resource_type:image AND (tags=${brand} OR tags=${collection})`;
-    res = await cloudinary.search.expression(expresion).execute();
-
-    if (res.resources.length > 0) {
-     const randomIndex = Math.floor(Math.random() * res.resources.length);
-     const img = res.resources[randomIndex].url;
-     return img;
-    }
-   }
+  if (!img && type) {
+   exp = `folder:AICONTENT AND resource_type:image AND tags=${type}`;
+   img = await searchImage(exp);
   }
-
-  // Si no se encontraron resultados, buscar una imagen genérica dentro del folder SHOPPING
-  const generic = await cloudinary.search.expression("folder:SHOPPING AND resource_type:image").execute();
-  const randomIndex = Math.floor(Math.random() * generic.resources.length);
-  const img = generic.resources[randomIndex].url;
+  if (!img) {
+   exp = `folder:SHOPPING AND resource_type:image`;
+   img = await searchImage(exp);
+  }
   return img;
 
  } catch (error) {
@@ -51,10 +37,3 @@ export default async function imgSearch(brand, collection) {
   throw error;
  }
 }
-
-
-
-
-
-
-
