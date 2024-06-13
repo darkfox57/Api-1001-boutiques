@@ -10,7 +10,12 @@ export default (sequelize) => {
   name: {
    type: DataTypes.STRING,
    allowNull: false,
-  }
+  },
+  slug: {
+   type: DataTypes.STRING(255),
+   allowNull: false,
+   unique: true
+  },
  }, {
   tableName: 'Category',
   timestamps: false

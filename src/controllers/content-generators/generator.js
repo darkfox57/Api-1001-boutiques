@@ -4,8 +4,6 @@ import imgSearch from '../../lib/cloudinarySearch.js';
 import { openaiFormater } from '../../lib/openaiformater.js';
 import { claude } from "./claude.js";
 
-
-
 dotenv.config();
 
 export async function generator(req, res) {
@@ -36,18 +34,15 @@ export async function generator(req, res) {
    "collection": ${collection},
    "type": ${type},
    "tags": [...],
-   "category": "...",
+   "category": [{name: "...", slug: "..."}],
    "content": "...", 
  }
  
  Please ensure that the content is well-structured, free of grammatical errors, and adheres to best practices for web content writing and writen in ${lang}.
 `
 
-
-
   try {
     const response = await claude(prompt)
-
 
     const data = JSON.parse(response)
 
@@ -60,7 +55,7 @@ export async function generator(req, res) {
       collection: data.collection,
       type: data.type,
       tags: data.tags,
-      category: [data.category],
+      category: data.category,
       slug: data.slug,
       content: data.content,
       published: true,

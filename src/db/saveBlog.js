@@ -29,28 +29,26 @@ export const saveBlog = async (post) => {
    published,
   });
 
-
+  // Obtener los nombres de las categorías desde el array de objetos
+  const categoryNames = category.map(c => c.name);
 
   const existingCategories = await models.Category.findAll({
    where: {
-    name: category.map(c => c),
+    name: categoryNames,
    },
   });
-
 
   const existingCategoryNames = existingCategories.map(c => c.name);
 
   // Crear las categorías que no existen
-  const newCategories = category.filter(c => !existingCategoryNames.includes(c));
-  const createdCategories = await models.Category.bulkCreate(newCategories.map(name => ({ name })));
+  const newCategories = category.filter(c => !existingCategoryNames.includes(c.name));
+  const createdCategories = await models.Category.bulkCreate(newCategories.map(cat => ({ name: cat.name, slug: cat.slug })));
 
   // Combinar las categorías existentes y recién creadas
   const allCategories = [...existingCategories, ...createdCategories];
 
   // Asociar las categorías al nuevo blog
   await newBlog.addCategory(allCategories);
-
-
 
   return newBlog;
 

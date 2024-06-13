@@ -1,7 +1,6 @@
 import cloudinary from "./cloudinaryUpload.js";
 
 export default async function imgSearch(brand, collection, type) {
- console.log({ collection, brand, type });
 
  try {
   const searchImage = async (exp) => {
@@ -14,6 +13,7 @@ export default async function imgSearch(brand, collection, type) {
   };
 
   let exp = `folder:AICONTENT AND resource_type:image`;
+
   if (collection) exp += ` AND (tags=${collection})`;
   if (brand) exp += ` AND (tags=${brand} OR tags=${collection})`;
 
