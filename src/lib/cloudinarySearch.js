@@ -12,18 +12,18 @@ export default async function imgSearch(brand, collection, type) {
    return null;
   };
 
-  let exp = `folder:AICONTENT AND resource_type:image`;
+  let exp = `resource_type:image`;
 
   if (collection) exp += ` AND (tags=${collection})`;
   if (brand) exp += ` AND (tags=${brand} OR tags=${collection})`;
 
   let img = await searchImage(exp);
   if (!img && brand) {
-   exp = `folder:AICONTENT AND resource_type:image AND tags=${brand}`;
+   exp = `resource_type:image AND tags=${brand}`;
    img = await searchImage(exp);
   }
   if (!img && type) {
-   exp = `folder:AICONTENT AND resource_type:image AND tags=${type}`;
+   exp = `resource_type:image AND tags=${type}`;
    img = await searchImage(exp);
   }
   if (!img) {
