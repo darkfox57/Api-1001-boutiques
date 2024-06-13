@@ -19,9 +19,13 @@ export async function generator(req, res) {
  Description: Write a compelling meta description that accurately summarizes the article's content and entices readers to engage with it.
  
  Tags: Provide a list of relevant tags or keywords related to the article's subject matter. If there is a brand name or collection, place it first in the tags, followed by the rest of the tags.
- 
+
  Category: Assign the article to an appropriate category or categories.
- 
+
+  brand: If brand is empty return null
+  collection: If collection is empty return null
+  type: If type is empty return null
+
  Content: Write the main body of the article in HTML format with at least 700 words and max 2000 words, including headings, paragraphs, lists, and any other relevant elements. The content should be informative, well-researched, and engaging for the target audience. keep in mind that this is an string that's going to be in javascript, , wrapped in double quotation marks, it must be save it as an string. Do not generate blank spaces between html tags.
  
  Once you have completed the article, format the output as a JSON object with the following structure:
