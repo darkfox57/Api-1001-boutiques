@@ -27,7 +27,7 @@ export default async function imgSearch(brand, collection, type) {
    img = await searchImage(exp);
   }
   if (!img) {
-   exp = `folder:SHOPPING AND resource_type:image`;
+   exp = `folder:Z8SHOPPING AND resource_type:image`;
    img = await searchImage(exp);
   }
   return img;
