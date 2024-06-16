@@ -20,7 +20,7 @@ export async function generator(req, res) {
  
  Tags: Provide a list of relevant tags or keywords related to the article's subject matter. If there is a brand name or collection, place it first in the tags, followed by the rest of the tags.
 
- Category: Assign the article to an appropriate category or categories.
+ Category: Assign the article to an appropriate category or categories even if it is just one must be an object with the properties name and slug wrapped in an array.
 
   brand: If brand is empty return null
   collection: If collection is empty return null
