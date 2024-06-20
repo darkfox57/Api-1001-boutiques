@@ -14,8 +14,9 @@ export default async function imgSearch(brand, collection, type) {
 
   let exp = `resource_type:image`;
 
+  if (brand) exp += ` AND (tags=${brand})`;
+
   if (collection) exp += ` AND (tags=${collection})`;
-  if (brand) exp += ` AND (tags=${brand} OR tags=${collection})`;
 
   let img = await searchImage(exp);
   if (!img && brand) {
