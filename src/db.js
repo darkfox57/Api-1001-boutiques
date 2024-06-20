@@ -47,9 +47,21 @@ for (const [key, value] of Object.entries(sequelize.models)) {
  models[key] = value;
 }
 
+models.Blog.belongsTo(models.User, { foreignKey: 'userId' });
+models.User.hasMany(models.Blog, { foreignKey: 'userId' });
+
+models.Blog.belongsTo(models.Brand, { foreignKey: 'brandId' });
+models.Brand.hasMany(models.Blog, { foreignKey: 'brandId' });
+
+models.Blog.belongsTo(models.Collection, { foreignKey: 'collectionId' });
+models.Collection.hasMany(models.Blog, { foreignKey: 'collectionId' });
+
+models.Blog.belongsTo(models.Type, { foreignKey: 'typeId' });
+models.Type.hasMany(models.Blog, { foreignKey: 'typeId' });
 
 models.Blog.belongsToMany(models.Category, { through: '_CategoryToPost', foreignKey: 'blogId' });
 models.Category.belongsToMany(models.Blog, { through: '_CategoryToPost', foreignKey: 'categoryId' });
+
 
 
 export const conn = sequelize;

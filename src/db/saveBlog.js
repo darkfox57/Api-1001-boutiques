@@ -1,19 +1,38 @@
 import dotenv from 'dotenv';
 import { Op } from 'sequelize';
+import slugify from 'slugify';
 import models from '../db.js';
 
 dotenv.config();
 
+// Función para generar el slug
+const generateSlug = (name) => {
+ return slugify(name, { lower: true, strict: true });
+};
 
 export const saveBlog = async (post) => {
  try {
-
   const { title, description, slug, img, content, brand, collection, type, tags, category, published } = post;
 
   const existingBlog = await models.Blog.findOne({ where: { slug } });
   if (existingBlog) {
-   return { message: 'This article has already been published' }
+   return { message: 'Este artículo ya ha sido publicado' };
   }
+
+  // Función para encontrar o crear una relación
+  const findOrCreate = async (Model, name) => {
+   const slug = generateSlug(name);
+   let record = await Model.findOne({ where: { slug } });
+   if (!record) {
+    record = await Model.create({ name, slug });
+   }
+   return record;
+  };
+
+  // Encontrar o crear Brand, Collection y Type
+  const brandRecord = await findOrCreate(models.Brand, brand);
+  const collectionRecord = await findOrCreate(models.Collection, collection);
+  const typeRecord = await findOrCreate(models.Type, type);
 
   // Guardar el blog
   const newBlog = await models.Blog.create({
@@ -22,33 +41,23 @@ export const saveBlog = async (post) => {
    slug,
    img,
    content,
-   brand,
-   collection,
-   type,
+   brandId: brandRecord.id,
+   collectionId: collectionRecord.id,
+   typeId: typeRecord.id,
    tags,
    published,
+   userId: 2
   });
 
-  // Obtener los nombres de las categorías desde el array de objetos
-  const categoryNames = category.map(c => c.name);
+  // Manejar la categoría como un string
+  const categorySlug = generateSlug(category);
+  let categoryRecord = await models.Category.findOne({ where: { slug: categorySlug } });
+  if (!categoryRecord) {
+   categoryRecord = await models.Category.create({ name: category, slug: categorySlug });
+  }
 
-  const existingCategories = await models.Category.findAll({
-   where: {
-    name: categoryNames,
-   },
-  });
-
-  const existingCategoryNames = existingCategories.map(c => c.name);
-
-  // Crear las categorías que no existen
-  const newCategories = category.filter(c => !existingCategoryNames.includes(c.name));
-  const createdCategories = await models.Category.bulkCreate(newCategories.map(cat => ({ name: cat.name, slug: cat.slug })));
-
-  // Combinar las categorías existentes y recién creadas
-  const allCategories = [...existingCategories, ...createdCategories];
-
-  // Asociar las categorías al nuevo blog
-  await newBlog.addCategory(allCategories);
+  // Asociar la categoría al nuevo blog
+  await newBlog.addCategory(categoryRecord);
 
   return newBlog;
 
@@ -57,7 +66,3 @@ export const saveBlog = async (post) => {
   throw error; // Re-lanzar el error para que sea manejado por el controlador
  }
 };
-
-
-
-
