@@ -50,7 +50,7 @@ export async function generator(req, res) {
 
     const data = JSON.parse(response)
 
-    const image = await imgSearch(brand, collection, type)
+    const image = await imgSearch(data.brand, data.collection, data.type)
 
     const post = {
       title: data.title,
