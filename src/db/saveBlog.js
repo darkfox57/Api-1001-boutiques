@@ -29,10 +29,10 @@ export const saveBlog = async (post) => {
    return record;
   };
 
-  // Encontrar o crear Brand, Collection y Type
-  const brandRecord = await findOrCreate(models.Brand, brand);
-  const collectionRecord = await findOrCreate(models.Collection, collection);
-  const typeRecord = await findOrCreate(models.Type, type);
+  // Encontrar o crear Brand, Collection y Type si no son null
+  const brandRecord = brand ? await findOrCreate(models.Brand, brand) : null;
+  const collectionRecord = collection ? await findOrCreate(models.Collection, collection) : null;
+  const typeRecord = type ? await findOrCreate(models.Type, type) : null;
 
   // Guardar el blog
   const newBlog = await models.Blog.create({
@@ -41,9 +41,9 @@ export const saveBlog = async (post) => {
    slug,
    img,
    content,
-   brandId: brandRecord.id,
-   collectionId: collectionRecord.id,
-   typeId: typeRecord.id,
+   brandId: brandRecord ? brandRecord.id : null,
+   collectionId: collectionRecord ? collectionRecord.id : null,
+   typeId: typeRecord ? typeRecord.id : null,
    tags,
    published,
    userId: 2
