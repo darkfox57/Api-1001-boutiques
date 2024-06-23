@@ -1,10 +1,11 @@
 import imgSearch from '../../lib/cloudinarySearch.js';
 
 const getImg = async (req, res) => {
- const { tags } = req.query
+ const { brand, collection, type } = req.query
+
  try {
-  const searchTags = tags.split(',')
-  const img = await imgSearch(searchTags)
+  // const searchTags = tags.split(',')
+  const img = await imgSearch(brand || null, collection || null, type || null)
   res.status(201).json(img)
 
  } catch (error) {

@@ -15,8 +15,15 @@ export default (sequelize) => {
    type: DataTypes.STRING,
    allowNull: false,
    unique: true,
+  },
+  brandId: {
+   type: DataTypes.INTEGER,
+   references: {
+    model: 'brands',
+    key: 'id'
+   }
   }
  }, {
   timestamps: true,
  });
-}
+};

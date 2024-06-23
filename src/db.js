@@ -62,6 +62,8 @@ models.Type.hasMany(models.Blog, { foreignKey: 'typeId' });
 models.Blog.belongsToMany(models.Category, { through: '_CategoryToPost', foreignKey: 'blogId' });
 models.Category.belongsToMany(models.Blog, { through: '_CategoryToPost', foreignKey: 'categoryId' });
 
+models.Collection.belongsTo(models.Brand, { foreignKey: 'brandId' });
+models.Brand.hasMany(models.Collection, { foreignKey: 'brandId' });
 
 
 export const conn = sequelize;

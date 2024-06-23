@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import { Op } from 'sequelize';
 import slugify from 'slugify';
 import models from '../db.js';
 
@@ -31,7 +30,14 @@ export const saveBlog = async (post) => {
 
   // Encontrar o crear Brand, Collection y Type si no son null
   const brandRecord = brand ? await findOrCreate(models.Brand, brand) : null;
-  const collectionRecord = collection ? await findOrCreate(models.Collection, collection) : null;
+  let collectionRecord = null;
+  if (collection) {
+   collectionRecord = await findOrCreate(models.Collection, collection);
+   if (brandRecord) {
+    // Asegurar que la colección pertenece a la marca adecuada
+    await collectionRecord.update({ brandId: brandRecord.id });
+   }
+  }
   const typeRecord = type ? await findOrCreate(models.Type, type) : null;
 
   // Guardar el blog
@@ -46,7 +52,7 @@ export const saveBlog = async (post) => {
    typeId: typeRecord ? typeRecord.id : null,
    tags,
    published,
-   userId: 2
+   userId: 2 // Aquí debes asegurarte de establecer el userId apropiadamente
   });
 
   // Manejar la categoría como un string

@@ -1,13 +1,17 @@
 import cloudinary from "./cloudinaryUpload.js";
 
 export default async function imgSearch(brand, collection, type) {
-
+ console.log(brand, collection, type);
  try {
   const searchImage = async (exp) => {
    const res = await cloudinary.search.expression(exp).execute();
    if (res.resources.length > 0) {
-    const randomIndex = Math.floor(Math.random() * res.resources.length);
-    return res.resources[randomIndex].url;
+    let filteredResources = res.resources;
+    if (brand) {
+     filteredResources = res.resources.filter((item) => item.asset_folder === brand);
+    }
+    const randomIndex = Math.floor(Math.random() * filteredResources.length);
+    return filteredResources[randomIndex].secure_url;
    }
    return null;
   };

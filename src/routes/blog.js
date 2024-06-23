@@ -2,7 +2,6 @@ import { Router } from "express";
 import getAllBlogs from "../controllers/blog/getAllBlogs.js";
 import getBlogBySlug from "../controllers/blog/getBlogBySlug.js";
 import getImg from "../controllers/blog/getImg.js";
-import imgSearch from "../lib/cloudinarySearch.js";
 
 const blogRoute = Router()
 
