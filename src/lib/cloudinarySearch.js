@@ -1,7 +1,6 @@
 import cloudinary from "./cloudinaryUpload.js";
 
 export default async function imgSearch(brand, collection, type) {
- console.log(brand, collection, type);
  try {
   const searchImage = async (exp) => {
    const res = await cloudinary.search.expression(exp).execute();
