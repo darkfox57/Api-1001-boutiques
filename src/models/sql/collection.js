@@ -16,24 +16,24 @@ export default (sequelize) => {
    allowNull: false,
    unique: true,
   },
+  meta_title: {
+   type: DataTypes.STRING,
+   allowNull: false,
+  },
+  meta_desc: {
+   type: DataTypes.STRING,
+   allowNull: false,
+  },
+  meta_keywords: {
+   type: DataTypes.STRING,
+   allowNull: false,
+  },
   brandId: {
    type: DataTypes.INTEGER,
    references: {
     model: 'brands',
     key: 'id'
-   },
-   meta_title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-   },
-   meta_desc: {
-    type: DataTypes.STRING,
-    allowNull: false,
-   },
-   meta_keywords: {
-    type: DataTypes.STRING,
-    allowNull: false,
-   },
+   }
   }
  }, {
   timestamps: true,
