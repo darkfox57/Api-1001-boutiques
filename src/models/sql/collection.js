@@ -18,15 +18,15 @@ export default (sequelize) => {
   },
   meta_title: {
    type: DataTypes.STRING,
-   allowNull: false,
+   allowNull: true,
   },
   meta_desc: {
    type: DataTypes.STRING,
-   allowNull: false,
+   allowNull: true,
   },
   meta_keywords: {
    type: DataTypes.STRING,
-   allowNull: false,
+   allowNull: true,
   },
   brandId: {
    type: DataTypes.INTEGER,
@@ -36,6 +36,6 @@ export default (sequelize) => {
    }
   }
  }, {
-  timestamps: true,
+  timestamps: false,
  });
 };

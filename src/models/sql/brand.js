@@ -18,17 +18,17 @@ export default (sequelize) => {
   },
   meta_title: {
    type: DataTypes.STRING,
-   allowNull: false,
+   allowNull: true,
   },
   meta_desc: {
    type: DataTypes.STRING,
-   allowNull: false,
+   allowNull: true,
   },
   meta_keywords: {
    type: DataTypes.STRING,
-   allowNull: false,
+   allowNull: true,
   },
  }, {
-  timestamps: true,
+  timestamps: false,
  });
 };
