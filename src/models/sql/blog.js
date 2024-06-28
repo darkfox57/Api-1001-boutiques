@@ -37,6 +37,10 @@ export default (sequelize) => {
    type: DataTypes.INTEGER,
    allowNull: true,
   },
+  likes: {
+   type: DataTypes.INTEGER,
+   allowNull: true,
+  },
   brandId: {
    type: DataTypes.INTEGER,
    references: {
