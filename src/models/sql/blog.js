@@ -28,19 +28,19 @@ export default (sequelize) => {
    type: DataTypes.TEXT,
    allowNull: false,
   },
-  tags: {
-   type: DataTypes.JSON,
-   allowNull: true
-  },
   published: {
    type: DataTypes.BOOLEAN,
    allowNull: true,
    defaultValue: false
   },
+  views: {
+   type: DataTypes.INTEGER,
+   allowNull: true,
+  },
   brandId: {
    type: DataTypes.INTEGER,
    references: {
-    model: 'brands', // Nombre de la tabla asociada al modelo Brand
+    model: 'brands',
     key: 'id',
    },
    allowNull: true,
@@ -48,7 +48,7 @@ export default (sequelize) => {
   collectionId: {
    type: DataTypes.INTEGER,
    references: {
-    model: 'collections', // Nombre de la tabla asociada al modelo Collection
+    model: 'collections',
     key: 'id',
    },
    allowNull: true,
@@ -56,7 +56,7 @@ export default (sequelize) => {
   typeId: {
    type: DataTypes.INTEGER,
    references: {
-    model: 'types', // Nombre de la tabla asociada al modelo Type
+    model: 'types',
     key: 'id',
    },
    allowNull: true,
@@ -64,7 +64,7 @@ export default (sequelize) => {
   userId: {
    type: DataTypes.INTEGER,
    references: {
-    model: 'users', // Nombre de la tabla asociada al modelo User
+    model: 'users',
     key: 'id',
    },
    allowNull: false,
