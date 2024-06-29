@@ -33,6 +33,14 @@ export default (sequelize) => {
    allowNull: true,
    defaultValue: false
   },
+  media: {
+      type: DataTypes.JSON,
+      allowNull: true,
+  },
+  expiryDate: {
+type: DataTypes.DATE,
+allowNull: true,
+},
   views: {
    type: DataTypes.INTEGER,
    allowNull: true,
@@ -40,6 +48,20 @@ export default (sequelize) => {
   likes: {
    type: DataTypes.INTEGER,
    allowNull: true,
+  },
+  rating: {
+    type: DataTypes.FLOAT,
+    allowNull: true,
+  },
+  shares: {
+    type: DataTypes.JSON,
+    allowNull: true,
+    defaultValue: { facebook: 0, twitter: 0, linkedin: 0, whatsApp: 0, link: 0 },
+  },
+  featured: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+    defaultValue: false,
   },
   brandId: {
    type: DataTypes.INTEGER,
