@@ -11,6 +11,10 @@ export default (sequelize) => {
    type: DataTypes.STRING,
    allowNull: false,
   },
+  logo: {
+    type: DataTypes.STRING,
+    allowNull: false,
+   },
   slug: {
    type: DataTypes.STRING,
    allowNull: false,

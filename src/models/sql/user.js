@@ -16,9 +16,18 @@ export default (sequelize) => {
    type: DataTypes.STRING,
    allowNull: true,
   },
+  slug: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
   password: {
    type: DataTypes.STRING,
    allowNull: true,
+  },
+  avatar: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   bio: {
    type: DataTypes.STRING,

@@ -24,6 +24,10 @@ export default (sequelize) => {
    type: DataTypes.TEXT,
    allowNull: true,
   },
+  published: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  }
  });
 }
 
