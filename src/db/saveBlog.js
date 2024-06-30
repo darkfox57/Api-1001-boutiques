@@ -19,6 +19,15 @@ const findOrCreateWithSeo = async (Model, name, type) => {
  return record;
 };
 
+const findOrCreate = async (Model, name) => {
+ const slug = generateSlug(name);
+ let record = await Model.findOne({ where: { slug } });
+ if (!record) {
+  record = await Model.create({ name, slug });
+ }
+ return record;
+};
+
 export const saveBlog = async (post) => {
  try {
   const { title, description, slug, img, content, brand, collection, type, tags, category, published } = post;
@@ -31,7 +40,7 @@ export const saveBlog = async (post) => {
   const brandRecord = brand ? await findOrCreateWithSeo(models.Brand, brand, 'brand') : null;
   let collectionRecord = null;
   if (collection) {
-   collectionRecord = await findOrCreateWithSeo(models.Collection, collection, 'collection');
+   collectionRecord = await findOrCreate(models.Collection, collection);
    if (brandRecord) {
     await collectionRecord.update({ brandId: brandRecord.id });
    }
