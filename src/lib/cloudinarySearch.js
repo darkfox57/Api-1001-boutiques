@@ -10,7 +10,7 @@ export default async function imgSearch(brand, collection, type) {
           filteredResources = res.resources.filter((item) =>
             item.asset_folder === brand && item.tags.includes(collection)
           );
-          if (filteredResources.length > 1) {
+          if (filteredResources.length < 1) {
             filteredResources = res.resources.filter((item) =>
               item.asset_folder === brand);
           }
