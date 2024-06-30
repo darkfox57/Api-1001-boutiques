@@ -34,34 +34,39 @@ export default (sequelize) => {
    defaultValue: false
   },
   media: {
-      type: DataTypes.JSON,
-      allowNull: true,
+   type: DataTypes.JSON,
+   allowNull: true,
+   defaultValue: null,
   },
   expiryDate: {
-type: DataTypes.DATE,
-allowNull: true,
-},
+   type: DataTypes.DATE,
+   allowNull: true,
+   defaultValue: null,
+  },
   views: {
    type: DataTypes.INTEGER,
    allowNull: true,
+   defaultValue: 0,
   },
   likes: {
    type: DataTypes.INTEGER,
    allowNull: true,
+   defaultValue: 0,
   },
   rating: {
-    type: DataTypes.FLOAT,
-    allowNull: true,
+   type: DataTypes.FLOAT,
+   allowNull: true,
+   defaultValue: null,
   },
   shares: {
-    type: DataTypes.JSON,
-    allowNull: true,
-    defaultValue: { facebook: 0, twitter: 0, linkedin: 0, whatsApp: 0, link: 0 },
+   type: DataTypes.JSON,
+   allowNull: true,
+   defaultValue: { facebook: 0, twitter: 0, linkedin: 0, whatsApp: 0, link: 0 },
   },
   featured: {
-    type: DataTypes.BOOLEAN,
-    allowNull: true,
-    defaultValue: false,
+   type: DataTypes.BOOLEAN,
+   allowNull: true,
+   defaultValue: false,
   },
   brandId: {
    type: DataTypes.INTEGER,
