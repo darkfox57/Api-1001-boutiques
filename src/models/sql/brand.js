@@ -13,7 +13,7 @@ export default (sequelize) => {
     },
     logo: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     slug: {
       type: DataTypes.STRING,

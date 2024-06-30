@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 import { saveBlog } from "../../db/saveBlog.js";
 import imgSearch from '../../lib/cloudinarySearch.js';
-import { openaiFormater } from '../../lib/openaiformater.js';
 import { claude } from "./claude.js";
 
 dotenv.config();
@@ -52,16 +51,20 @@ export async function generator(req, res) {
 
     const image = await imgSearch(data.brand, data.collection, data.type)
 
+    function formatText(text) {
+      return text.replace(/\s+:/g, ':');
+    }
+
     const post = {
-      title: data.title,
-      description: data.description,
+      title: formatText(data.title),
+      description: formatText(data.description),
       brand: data.brand,
       collection: data.collection,
       type: data.type,
       tags: data.tags,
       category: data.category,
       slug: data.slug,
-      content: data.content,
+      content: formatText(data.content),
       published: true,
       img: image,
     };
