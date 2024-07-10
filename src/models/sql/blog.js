@@ -56,7 +56,7 @@ export default (sequelize) => {
   rating: {
    type: DataTypes.FLOAT,
    allowNull: true,
-   defaultValue: null,
+   defaultValue: 0,
   },
   shares: {
    type: DataTypes.JSON,
