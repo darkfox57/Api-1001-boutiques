@@ -68,6 +68,8 @@ models.Tag.belongsToMany(models.Blog, { through: '_TagToPost', foreignKey: 'tagI
 models.Collection.belongsTo(models.Brand, { foreignKey: 'brandId' });
 models.Brand.hasMany(models.Collection, { foreignKey: 'brandId' });
 
+models.Session.belongsTo(models.User, { foreignKey: 'userId' });
+models.User.hasMany(models.Session, { foreignKey: 'userId' });
 
 export const conn = sequelize;
 export default models;
