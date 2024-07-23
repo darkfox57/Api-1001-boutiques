@@ -8,7 +8,6 @@ dotenv.config();
 
 
 const getAllBlogs = async (req, res) => {
- console.log('todos los blogs');
  try {
 
   const data = await models.Blog.findAll({
