@@ -9,12 +9,12 @@ import productRoute from "./products.js";
 
 const router = Router()
 
-router.use('/', home)
 router.use('/blog', blogRoute)
 router.use('/products', productRoute)
 router.use('/img-generate', titan_img);
 router.use('/generate', generator);
 router.use('/auto', generateAuto)
+router.use('/', home)
 
 
 
