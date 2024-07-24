@@ -9,11 +9,19 @@ dotenv.config();
 
 const generateAuto = async (req, res) => {
  try {
-  const { keyword, brand, collection, type } = await models.Search_keywords.findAll({
+  // Buscar una palabra clave no publicada de forma aleatoria
+  const result = await models.Search_keywords.findAll({
    where: { published: false },
    order: Sequelize.literal('rand()'),
    limit: 1
   });
+
+  // Si no se encuentra ninguna palabra clave no publicada, responder con un mensaje
+  if (result.length === 0) {
+   return res.status(404).json({ message: 'No unpublished keywords found' });
+  }
+
+  const { keyword, brand, collection, type } = result[0];
 
   const prompt = `You are a talented and versatile content writer tasked with generating a comprehensive blog article by the topic: ${keyword}. Your article should include the following elements:
 
