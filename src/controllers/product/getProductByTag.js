@@ -37,7 +37,7 @@ const getProductByTag = async (req, res) => {
   const data = await models.Product.findAll({
    where: whereConditions,
    order: Sequelize.literal('RAND()'),  // Seleccionar productos aleatoriamente
-   limit: 8  // Limitar el número de resultados a 8
+   limit: 12  // Limitar el número de resultados a 8
   });
 
   res.status(200).json(data);
