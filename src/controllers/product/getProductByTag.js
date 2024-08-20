@@ -34,11 +34,53 @@ const getProductByTag = async (req, res) => {
   }
 
   // Realizar la consulta a la base de datos con las condiciones construidas
-  const data = await models.Product.findAll({
+  let data = await models.Product.findAll({
    where: whereConditions,
    order: Sequelize.literal('RAND()'),  // Seleccionar productos aleatoriamente
-   limit: 12  // Limitar el número de resultados a 8
+   limit: 12  // Limitar el número de resultados a 12
   });
+
+  const resultsCount = data.length;
+
+  // Completar resultados si son menos de 12
+  if (resultsCount < 12) {
+   const countToComplete = 12 - resultsCount;
+   let additionalData = [];
+
+   if (brand && collection && type) {
+    // Completar con otros productos de la misma colección
+    additionalData = await models.Product.findAll({
+     where: {
+      collection: collection,
+      id: { [Op.notIn]: data.map(product => product.id) }
+     },
+     order: Sequelize.literal('RAND()'),
+     limit: countToComplete
+    });
+   } else if (brand && collection) {
+    // Completar con otros productos de la misma marca
+    additionalData = await models.Product.findAll({
+     where: {
+      brand: brand,
+      id: { [Op.notIn]: data.map(product => product.id) }
+     },
+     order: Sequelize.literal('RAND()'),
+     limit: countToComplete
+    });
+   } else if (type && type_form) {
+    // Completar con otros productos que coincidan con type
+    additionalData = await models.Product.findAll({
+     where: {
+      type: { [Op.like]: `%${type}%` },
+      id: { [Op.notIn]: data.map(product => product.id) }
+     },
+     order: Sequelize.literal('RAND()'),
+     limit: countToComplete
+    });
+   }
+
+   data = data.concat(additionalData);
+  }
 
   res.status(200).json(data);
  } catch (error) {
