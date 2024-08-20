@@ -3,7 +3,7 @@ import models from '../db.js';
 
 dotenv.config();
 
-export const saveProduct = async ({ name, brand, image1, link, price, old_price, variable, category, Forme, Gamme, description }) => {
+export const saveProduct = async ({ name, brand, image1, link, price, old_price, variable, category, Forme, Gamme, description, Type }) => {
  try {
   const data = {
    name: name[0],
@@ -17,6 +17,7 @@ export const saveProduct = async ({ name, brand, image1, link, price, old_price,
    pricepercentreduction: variable[0],
    price: price[0],
    old_price: old_price[0],
+   type_form: Type[0]
   };
 
   const existingProduct = await models.Product.findOne({

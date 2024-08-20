@@ -51,6 +51,10 @@ export default (sequelize) => {
   old_price: {
    type: DataTypes.FLOAT,
    allowNull: false
+  },
+  type_form: {
+   type: DataTypes.STRING,
+   allowNull: false
   }
  })
 }
