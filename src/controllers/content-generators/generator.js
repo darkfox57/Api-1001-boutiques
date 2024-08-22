@@ -12,7 +12,7 @@ export async function generator(req, res) {
 
   const prompt = `You are a talented and versatile content writer tasked with generating a comprehensive blog article by the topic: ${keywords}. Your article should include the following elements:
 
-    Title: Avoiding the use of words Generate a catchy, creative and SEO-friendly title for the blog article.
+    Title: Avoiding the use of the words confort and elegance, generate a catchy, creative and SEO-friendly title for the blog article.
     Slug: Create a URL-friendly slug based on the title.
     Description: Write a compelling meta description that accurately summarizes the article's content and entices readers to engage with it.
     Tags: Provide a list of relevant tags or keywords related to the article's subject matter. If there is a brand name or collection, place it first in the tags, followed by the rest of the tags.
