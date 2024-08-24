@@ -10,36 +10,36 @@ const getProductByTag = async (req, res) => {
  try {
   let whereConditions = {};
 
-  // 1. Si hay marca, buscar por marca
+  // 1. Buscar por brand, collection y type
   if (brand) {
    whereConditions.brand = brand;
 
-   // 2. Si hay colección, buscar por marca y colección
    if (collection) {
     whereConditions.collection = collection;
    }
 
-   // 3. Si hay tipo, buscar por marca, colección y tipo
    if (type) {
     whereConditions.type = { [Op.like]: `%${type}%` };
    }
+
   } else if (type) {
-   // 4. Si no hay marca pero hay tipo, buscar por tipo
+   // 2. Buscar por type y type_form
    whereConditions.type = { [Op.like]: `%${type}%` };
 
-   // 5. Si hay type_form, buscar por tipo y type_form
    if (type_form) {
     whereConditions.type_form = { [Op.like]: `%${type_form}%` };
    }
+
   } else if (type_form) {
+   // 3. Buscar solo por type_form
    whereConditions.type_form = { [Op.like]: `%${type_form}%` };
   }
 
-  // Realizar la consulta a la base de datos con las condiciones construidas
+  // Realizar la consulta principal a la base de datos con las condiciones construidas
   let data = await models.Product.findAll({
    where: whereConditions,
-   order: Sequelize.literal('RAND()'),  // Seleccionar productos aleatoriamente
-   limit: 12  // Limitar el número de resultados a 12
+   order: Sequelize.literal('RAND()'),
+   limit: 12,
   });
 
   const resultsCount = data.length;
@@ -50,37 +50,62 @@ const getProductByTag = async (req, res) => {
    let additionalData = [];
 
    if (brand && collection && type) {
-    // Completar con otros productos de la misma colección
+    // Completar con productos de la misma colección
     additionalData = await models.Product.findAll({
      where: {
       collection: collection,
-      id: { [Op.notIn]: data.map(product => product.id) }
+      id: { [Op.notIn]: data.map((product) => product.id) },
      },
      order: Sequelize.literal('RAND()'),
-     limit: countToComplete
+     limit: countToComplete,
     });
+
    } else if (brand && collection) {
-    // Completar con otros productos de la misma marca
+    // Completar con productos de la misma marca
     additionalData = await models.Product.findAll({
      where: {
       brand: brand,
-      id: { [Op.notIn]: data.map(product => product.id) }
+      id: { [Op.notIn]: data.map((product) => product.id) },
      },
      order: Sequelize.literal('RAND()'),
-     limit: countToComplete
+     limit: countToComplete,
     });
+
    } else if (type && type_form) {
-    // Completar con otros productos que coincidan con type
+    // Completar con productos que coincidan con type_form
+    additionalData = await models.Product.findAll({
+     where: {
+      type_form: { [Op.like]: `%${type_form}%` },
+      id: { [Op.notIn]: data.map((product) => product.id) },
+     },
+     order: Sequelize.literal('RAND()'),
+     limit: countToComplete,
+    });
+
+   } else if (type) {
+    // Completar con productos que coincidan con type
     additionalData = await models.Product.findAll({
      where: {
       type: { [Op.like]: `%${type}%` },
-      id: { [Op.notIn]: data.map(product => product.id) }
+      id: { [Op.notIn]: data.map((product) => product.id) },
      },
      order: Sequelize.literal('RAND()'),
-     limit: countToComplete
+     limit: countToComplete,
+    });
+
+   } else if (type_form) {
+    // Completar con productos que coincidan con type_form
+    additionalData = await models.Product.findAll({
+     where: {
+      type_form: { [Op.like]: `%${type_form}%` },
+      id: { [Op.notIn]: data.map((product) => product.id) },
+     },
+     order: Sequelize.literal('RAND()'),
+     limit: countToComplete,
     });
    }
 
+   // Concatenar los resultados adicionales
    data = data.concat(additionalData);
   }
 
