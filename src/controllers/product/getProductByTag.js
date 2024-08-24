@@ -5,7 +5,16 @@ import models from '../../db.js';
 dotenv.config();
 
 const getProductByTag = async (req, res) => {
- const { brand, collection, type, type_form } = req.query;
+ // Obtener los parámetros de la solicitud
+ let { brand, collection, type, type_form } = req.query;
+
+ // Transformar las cadenas 'null' a valores null
+ brand = brand === 'null' ? null : brand;
+ collection = collection === 'null' ? null : collection;
+ type = type === 'null' ? null : type;
+ type_form = type_form === 'null' ? null : type_form;
+ console.log(brand, collection, type, type_form);
+
 
  try {
   let whereConditions = {};
@@ -22,18 +31,15 @@ const getProductByTag = async (req, res) => {
     whereConditions.type = { [Op.like]: `%${type}%` };
    }
 
-   if (!collection && type_form) {
-    // Si hay type_form pero no collection, incluirlo
+   if (type_form) {
     whereConditions.type_form = { [Op.like]: `%${type_form}%` };
    }
-
   } else if (type) {
    whereConditions.type = { [Op.like]: `%${type}%` };
 
    if (type_form) {
     whereConditions.type_form = { [Op.like]: `%${type_form}%` };
    }
-
   } else if (type_form) {
    whereConditions.type_form = { [Op.like]: `%${type_form}%` };
   }
@@ -43,7 +49,7 @@ const getProductByTag = async (req, res) => {
    where: whereConditions,
    order: Sequelize.literal('RAND()'),
    limit: 12,
-   raw: true,  // Devolver objetos planos
+   raw: true, // Devolver objetos planos
   });
 
   let resultsCount = data.length;
@@ -53,127 +59,77 @@ const getProductByTag = async (req, res) => {
    const countToComplete = 12 - resultsCount;
    let additionalData = [];
 
-   // Jerarquía de búsqueda para completar
-   if (brand && collection && type) {
-    // Si se buscan por brand, collection y type, completar con la misma colección primero
-    additionalData = await models.Product.findAll({
-     where: {
-      collection: collection,
-      id: { [Op.notIn]: data.map(product => product.id) }
-     },
-     order: Sequelize.literal('RAND()'),
-     limit: countToComplete,
-     raw: true,  // Devolver objetos planos
-    });
+   // Condición de búsqueda específica: buscar por brand, collection, type y type_form
+   if (brand && collection && type && type_form) {
+    // Completado con productos en la misma marca pero manteniendo el type y type_form
+    if (resultsCount < 12) {
+     additionalData = await models.Product.findAll({
+      where: {
+       brand: brand,
+       type: { [Op.like]: `%${type}%` },
+       type_form: { [Op.like]: `%${type_form}%` },
+       collection: { [Op.ne]: collection }, // Excluir la colección actual
+       id: { [Op.notIn]: data.map(product => product.id) }
+      },
+      order: Sequelize.literal('RAND()'),
+      limit: countToComplete,
+      raw: true, // Devolver objetos planos
+     });
 
-    data = data.concat(additionalData);
-    resultsCount = data.length;
+     data = data.concat(additionalData);
+     resultsCount = data.length;
+    }
+
+    // Si no son suficientes, completado con productos que mantengan type y type_form sin importar la marca
+    if (resultsCount < 12) {
+     const additionalCount = 12 - resultsCount;
+     additionalData = await models.Product.findAll({
+      where: {
+       type: { [Op.like]: `%${type}%` },
+       type_form: { [Op.like]: `%${type_form}%` },
+       id: { [Op.notIn]: data.map(product => product.id) }
+      },
+      order: Sequelize.literal('RAND()'),
+      limit: additionalCount,
+      raw: true, // Devolver objetos planos
+     });
+
+     data = data.concat(additionalData);
+     resultsCount = data.length;
+    }
    }
 
-   if (resultsCount < 12 && brand && collection) {
-    // Si aún faltan productos, completar con otros productos de la misma marca
-    const additionalCount = 12 - resultsCount;
-    additionalData = await models.Product.findAll({
-     where: {
-      brand: brand,
-      id: { [Op.notIn]: data.map(product => product.id) }
-     },
-     order: Sequelize.literal('RAND()'),
-     limit: additionalCount,
-     raw: true,  // Devolver objetos planos
-    });
+   // Completado cuando solo hay type y/o type_form
+   if (!brand && !collection && (type || type_form)) {
+    // Si hay type y type_form o solo uno de ellos, completado manteniendo lo que esté presente
+    const whereAdditional = {};
 
-    data = data.concat(additionalData);
-    resultsCount = data.length;
+    if (type) {
+     whereAdditional.type = { [Op.like]: `%${type}%` };
+    }
+    if (type_form) {
+     whereAdditional.type_form = { [Op.like]: `%${type_form}%` };
+    }
+
+    if (resultsCount < 12) {
+     const additionalCount = 12 - resultsCount;
+     additionalData = await models.Product.findAll({
+      where: {
+       ...whereAdditional,
+       id: { [Op.notIn]: data.map(product => product.id) }
+      },
+      order: Sequelize.literal('RAND()'),
+      limit: additionalCount,
+      raw: true, // Devolver objetos planos
+     });
+
+     data = data.concat(additionalData);
+     resultsCount = data.length;
+    }
    }
 
-   if (resultsCount < 12 && brand && type && type_form) {
-    // Completar con productos que coincidan solo con type_form
-    const additionalCount = 12 - resultsCount;
-    additionalData = await models.Product.findAll({
-     where: {
-      type_form: { [Op.like]: `%${type_form}%` },
-      id: { [Op.notIn]: data.map(product => product.id) }
-     },
-     order: Sequelize.literal('RAND()'),
-     limit: additionalCount,
-     raw: true,  // Devolver objetos planos
-    });
-
-    data = data.concat(additionalData);
-    resultsCount = data.length;
-   }
-
-   if (resultsCount < 12 && type && type_form) {
-    // Completar con productos que coincidan solo con type_form
-    const additionalCount = 12 - resultsCount;
-    additionalData = await models.Product.findAll({
-     where: {
-      type_form: { [Op.like]: `%${type_form}%` },
-      id: { [Op.notIn]: data.map(product => product.id) }
-     },
-     order: Sequelize.literal('RAND()'),
-     limit: additionalCount,
-     raw: true,  // Devolver objetos planos
-    });
-
-    data = data.concat(additionalData);
-    resultsCount = data.length;
-   }
-
-   if (resultsCount < 12 && type) {
-    // Completar con productos que coincidan solo con type
-    const additionalCount = 12 - resultsCount;
-    additionalData = await models.Product.findAll({
-     where: {
-      type: { [Op.like]: `%${type}%` },
-      id: { [Op.notIn]: data.map(product => product.id) }
-     },
-     order: Sequelize.literal('RAND()'),
-     limit: additionalCount,
-     raw: true,  // Devolver objetos planos
-    });
-
-    data = data.concat(additionalData);
-    resultsCount = data.length;
-   }
-
-   if (resultsCount < 12 && type_form) {
-    // Completar con productos que coincidan solo con type_form
-    const additionalCount = 12 - resultsCount;
-    additionalData = await models.Product.findAll({
-     where: {
-      type_form: { [Op.like]: `%${type_form}%` },
-      id: { [Op.notIn]: data.map(product => product.id) }
-     },
-     order: Sequelize.literal('RAND()'),
-     limit: additionalCount,
-     raw: true,  // Devolver objetos planos
-    });
-
-    data = data.concat(additionalData);
-    resultsCount = data.length;
-   }
-
-   if (resultsCount < 12 && brand) {
-    // Si aún faltan productos, completar con otros productos de la misma marca
-    const additionalCount = 12 - resultsCount;
-    additionalData = await models.Product.findAll({
-     where: {
-      brand: brand,
-      id: { [Op.notIn]: data.map(product => product.id) }
-     },
-     order: Sequelize.literal('RAND()'),
-     limit: additionalCount,
-     raw: true,  // Devolver objetos planos
-    });
-
-    data = data.concat(additionalData);
-    resultsCount = data.length;
-   }
-
-   // Si después de todas las búsquedas aún no se han encontrado 12 productos, completar sin ningún filtro adicional
-   if (resultsCount < 12) {
+   // Si después de todas las búsquedas aún no se han encontrado 12 productos y no hay `type_form`, completar sin ningún filtro adicional
+   if (resultsCount < 12 && !type_form) {
     const additionalCount = 12 - resultsCount;
     additionalData = await models.Product.findAll({
      where: {
@@ -181,7 +137,7 @@ const getProductByTag = async (req, res) => {
      },
      order: Sequelize.literal('RAND()'),
      limit: additionalCount,
-     raw: true,  // Devolver objetos planos
+     raw: true, // Devolver objetos planos
     });
 
     data = data.concat(additionalData);
