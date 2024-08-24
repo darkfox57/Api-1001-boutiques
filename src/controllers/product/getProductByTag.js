@@ -31,6 +31,8 @@ const getProductByTag = async (req, res) => {
    if (type_form) {
     whereConditions.type_form = { [Op.like]: `%${type_form}%` };
    }
+  } else if (type_form) {
+   whereConditions.type_form = { [Op.like]: `%${type_form}%` };
   }
 
   // Realizar la consulta a la base de datos con las condiciones construidas
