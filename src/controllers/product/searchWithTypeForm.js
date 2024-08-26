@@ -14,16 +14,18 @@ const getProductWithTypeForm = async (req, res) => {
  type = type === 'null' ? null : type;
  type_form = type_form === 'null' ? null : type_form;
 
+ // Verificar que `type_form` esté presente, ya que es obligatorio para este archivo
  if (!type_form) {
   return res.status(400).json({ error: "type_form is required" });
  }
 
  try {
+  // Inicializar condiciones de búsqueda con `type_form` como filtro obligatorio
   let whereConditions = {
    type_form: { [Op.like]: `%${type_form}%` }
   };
 
-  // 1. Construir condiciones de búsqueda basadas en los parámetros proporcionados
+  // Construir condiciones de búsqueda adicionales basadas en los parámetros proporcionados
   if (brand) {
    whereConditions.brand = brand;
 
@@ -38,7 +40,7 @@ const getProductWithTypeForm = async (req, res) => {
    whereConditions.type = { [Op.like]: `%${type}%` };
   }
 
-  // 2. Realizar la consulta principal con las condiciones construidas usando `raw: true`
+  // Realizar la consulta principal con las condiciones construidas usando `raw: true`
   let data = await models.Product.findAll({
    where: whereConditions,
    order: Sequelize.literal('RAND()'),
@@ -48,13 +50,13 @@ const getProductWithTypeForm = async (req, res) => {
 
   let resultsCount = data.length;
 
-  // 3. Lógica para completar los resultados si son menos de 12
+  // Si no se encontraron productos que coincidan con todos los filtros proporcionados
   if (resultsCount < 12) {
    const countToComplete = 12 - resultsCount;
    let additionalData = [];
 
+   // Si hay `brand`, `collection` y `type`, pero no suficientes resultados, ignorar `type`
    if (brand && collection && type) {
-    // Completado en la misma marca y type_form pero ignorando type
     additionalData = await models.Product.findAll({
      where: {
       brand: brand,
@@ -71,8 +73,8 @@ const getProductWithTypeForm = async (req, res) => {
     resultsCount = data.length;
    }
 
+   // Si aún faltan productos y hay `brand` y `collection`, buscar solo por `brand` y `type_form`
    if (resultsCount < 12 && brand && collection) {
-    // Completado en la misma marca pero ignorando collection y manteniendo type_form
     const additionalCount = 12 - resultsCount;
     additionalData = await models.Product.findAll({
      where: {
@@ -89,8 +91,8 @@ const getProductWithTypeForm = async (req, res) => {
     resultsCount = data.length;
    }
 
+   // Si aún faltan productos y hay `type`, buscar solo por `type` y `type_form` en otras marcas
    if (resultsCount < 12 && type) {
-    // Completado buscando solo por type y type_form en otras marcas
     const additionalCount = 12 - resultsCount;
     additionalData = await models.Product.findAll({
      where: {
@@ -107,11 +109,28 @@ const getProductWithTypeForm = async (req, res) => {
     resultsCount = data.length;
    }
 
-   // No realizar una búsqueda sin filtro si hay type_form y no se completaron los 12
+   // Si aún no hay suficientes productos, buscar solo por `type_form`
+   if (resultsCount < 12) {
+    const additionalCount = 12 - resultsCount;
+    additionalData = await models.Product.findAll({
+     where: {
+      type_form: { [Op.like]: `%${type_form}%` },
+      id: { [Op.notIn]: data.map(product => product.id) }
+     },
+     order: Sequelize.literal('RAND()'),
+     limit: additionalCount,
+     raw: true, // Devolver objetos planos
+    });
+
+    data = data.concat(additionalData);
+   }
+
+   // Enviar la respuesta con los datos encontrados
    res.status(200).json(data);
    return;
   }
 
+  // Enviar la respuesta con los datos encontrados
   res.status(200).json(data);
  } catch (error) {
   console.error("Error al consultar los productos:", error);
